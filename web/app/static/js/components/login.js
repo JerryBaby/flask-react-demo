@@ -36,6 +36,8 @@ class LoginForm extends Component {
                     } else {
                         console.log('Bad request: ', res.url, 'statue: ', res.status);
                     }
+                }, (e) => {
+                    console.log('Fetch failed: ',e);
                 });
             }
         });

@@ -5106,6 +5106,8 @@ var LoginForm = function (_Component) {
                         } else {
                             console.log('Bad request: ', res.url, 'statue: ', res.status);
                         }
+                    }, function (e) {
+                        console.log('Fetch failed: ', e);
                     });
                 }
             });
