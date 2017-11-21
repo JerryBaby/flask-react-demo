@@ -1,1 +1,9 @@
 全部接口只接受 json 请求，返回 JSON 数据
+
+
+code:
+
+    0: 请求成功
+    1: invalid parameters.
+    2: user not registered.
+    ...

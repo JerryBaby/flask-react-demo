@@ -5090,12 +5090,17 @@ var LoginForm = function (_Component) {
                         headers: {
                             "Content-Type": "application/json"
                         },
+                        // keep cookie
+                        credentials: 'include',
                         body: data
                     }).then(function (res) {
                         if (res.ok) {
+                            console.log(res);
                             res.json().then(function (data) {
                                 if (data.code != 0) {
                                     _message3.default.error(data.result);
+                                } else {
+                                    location.href = '/';
                                 }
                             });
                         } else {

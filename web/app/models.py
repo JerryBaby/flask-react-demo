@@ -52,7 +52,7 @@ class User(UserMixin, db.Model):
         return True
 
     def __repr__(self):
-        return '<User %r>' % self.name
+        return '<User %r>' % self.username
 
 
 @login_manager.user_loader

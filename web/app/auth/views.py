@@ -32,11 +32,20 @@ def login():
         data = request.json
         if data is not None and \
                 check_param(data.keys(), ['userName', 'password', 'remember']):
-            return jsonify({'code': 0, 'result': 'request success.'})
+            user = User.query.filter_by(username=data['userName']).first()
+            if user is not None:
+                if user.verify_password(data['password']):
+                    if data['remember']:
+                        login_user(user, remember=True)
+                    else:
+                        login_user(user)
+                    return jsonify({'code': 0, 'result': ''})
+                else:
+                    return jsonify({'code': 3, 'result': 'incorrect password.'})
+            else:
+                return jsonify({'code': 2, 'result': 'user not registered.'})
         else:
             return jsonify({'code': 1, 'result': 'invalid request parameters.'})
-
-
 
 
 @auth.route('/logout')

@@ -20,12 +20,17 @@ class LoginForm extends Component {
                     headers: {
                         "Content-Type": "application/json"
                     },
+                    // keep cookie
+                    credentials: 'include',
                     body: data,
                 }).then((res) => {
                     if (res.ok) {
+                        console.log(res)
                         res.json().then((data) => {
                             if (data.code != 0) {
                                 message.error(data.result);
+                            } else {
+                                location.href = '/';
                             }
                         });
                     } else {
