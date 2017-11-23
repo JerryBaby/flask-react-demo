@@ -2410,30 +2410,30 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var NotFound = function (_Component) {
-    _inherits(NotFound, _Component);
+var InternalServerError = function (_Component) {
+    _inherits(InternalServerError, _Component);
 
-    function NotFound() {
-        _classCallCheck(this, NotFound);
+    function InternalServerError() {
+        _classCallCheck(this, InternalServerError);
 
-        return _possibleConstructorReturn(this, (NotFound.__proto__ || Object.getPrototypeOf(NotFound)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (InternalServerError.__proto__ || Object.getPrototypeOf(InternalServerError)).apply(this, arguments));
     }
 
-    _createClass(NotFound, [{
+    _createClass(InternalServerError, [{
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { style: { textAlign: 'center', margin: '100px auto' } },
-                _react2.default.createElement(_spin2.default, { tip: '500 Internal Server Error......', size: 'large' })
+                { className: 'error-page' },
+                _react2.default.createElement(_spin2.default, { size: 'large', tip: 'Internal Server Error ......' })
             );
         }
     }]);
 
-    return NotFound;
+    return InternalServerError;
 }(_react.Component);
 
-_reactDom2.default.render(_react2.default.createElement(NotFound, null), document.getElementById('react-demo'));
+_reactDom2.default.render(_react2.default.createElement(InternalServerError, null), document.getElementById('react-demo'));
 
 /***/ }),
 /* 70 */

@@ -2424,8 +2424,8 @@ var NotFound = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { style: { textAlign: 'center', margin: '100px auto' } },
-                _react2.default.createElement(_spin2.default, { tip: '404 Not Found......', size: 'large' })
+                { className: 'error-page' },
+                _react2.default.createElement(_spin2.default, { size: 'large', tip: '404 Not Found ......' })
             );
         }
     }]);

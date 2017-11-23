@@ -2,11 +2,17 @@ var webpack = require('webpack');
 
 module.exports = {
     entry : {
-        index : './index.js'
+        //index : './components/Dashboard/index.js'
+        //index : './components/Servers/index.js'
+        //index : './components/Users/index.js'
+        //index : './components/CMDB/index.js'
     },
     output : {
         path : __dirname + '/build',
-        filename : 'bundle.js'
+        //filename : 'index.js'
+        //filename : 'servers.js'
+        //filename : 'users.js'
+        //filename : 'cmdb.js'
     },
     devServer: {
         contentBase: '',

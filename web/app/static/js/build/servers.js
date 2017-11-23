@@ -5052,7 +5052,7 @@ var Navigation = function (_Component) {
             return _react2.default.createElement(
                 _layout2.default,
                 { className: 'layout' },
-                _react2.default.createElement(_sider2.default, { cKey: 'index' }),
+                _react2.default.createElement(_sider2.default, { cKey: 'servers' }),
                 _react2.default.createElement(
                     _layout2.default,
                     null,

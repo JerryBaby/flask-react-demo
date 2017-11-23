@@ -1,9 +1,30 @@
 全部接口只接受 json 请求，返回 JSON 数据
+非单页面应用，多页面间跳转
 
 
-code:
+## code:
 
-    0: 请求成功
-    1: invalid parameters.
-    2: user not registered.
-    ...
+* 0: 请求成功
+* 1: invalid parameters.
+* 2: user not registered.
+* ...
+
+## URL:
+
+#### 用户页面
+
+* http://localhost/: 主页 index，图表
+* http://localhost/servers: 服务器资产界面
+* http://localhost/users: 用户管理界面
+* http://localhost/cmdb: 配置管理平台界面
+
+#### API
+
+* http://localhost/server_api/*: 服务器资产相关接口
+* http://localhost/user_api/*: 用户相关接口
+* http://localhost/cmdb_api/*: 配置相关接口
+
+
+## TODO
+
+react-router 构建 single page application
