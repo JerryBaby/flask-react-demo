@@ -5,7 +5,8 @@
 import os
 import click
 from app import create_app, db
-from app.models import User, Role
+from app.user_models import User, userRole
+from app.data_models import serverRole, Platform, Status, Servers, IPType, IP
 
 
 app = create_app(os.environ.get('FLASK_CONFIG', 'default'))
@@ -13,7 +14,15 @@ app = create_app(os.environ.get('FLASK_CONFIG', 'default'))
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=db, User=User, Role=Role)
+    return dict(db=db,
+                User=User,
+                userRole=userRole,
+                serverRole=serverRole,
+                Platform=Platform,
+                Status=Status,
+                Servers=Servers,
+                IPType=IPType,
+                IP=IP)
 
 
 @app.cli.command()

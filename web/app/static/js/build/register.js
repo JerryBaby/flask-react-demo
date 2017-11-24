@@ -5635,66 +5635,79 @@ var RegistrationForm = function (_Component) {
             };
 
             return _react2.default.createElement(
-                _form2.default,
-                { className: 'register-form', onSubmit: this.handleSubmit.bind(this) },
+                'div',
+                { id: 'registerpagewrap' },
                 _react2.default.createElement(
-                    FormItem,
-                    _extends({}, formItemLayout, { label: 'E-mail', hasFeedback: true }),
-                    getFieldDecorator('email', {
-                        rules: [{
-                            type: 'email', message: 'This input is not valid E-mail!'
-                        }, {
-                            required: true, message: 'Please input your E-mail!'
-                        }]
-                    })(_react2.default.createElement(_input2.default, null))
+                    'p',
+                    null,
+                    'Sing up to Demo'
                 ),
                 _react2.default.createElement(
-                    FormItem,
-                    _extends({}, formItemLayout, { label: 'Password', hasFeedback: true }),
-                    getFieldDecorator('password', {
-                        rules: [{
-                            required: true, message: 'Please input your password!'
-                        }, {
-                            validator: this.checkConfirm.bind(this)
-                        }]
-                    })(_react2.default.createElement(_input2.default, { type: 'password' }))
-                ),
-                _react2.default.createElement(
-                    FormItem,
-                    _extends({}, formItemLayout, { label: 'Confirm Password', hasFeedback: true }),
-                    getFieldDecorator('confirm', {
-                        rules: [{
-                            required: true, message: 'Please confirm your password!'
-                        }, {
-                            validator: this.checkPassword.bind(this)
-                        }]
-                    })(_react2.default.createElement(_input2.default, { type: 'password', onBlur: this.handleConfirmBlur.bind(this) }))
-                ),
-                _react2.default.createElement(
-                    FormItem,
-                    _extends({}, formItemLayout, {
-                        label: _react2.default.createElement(
-                            'span',
-                            null,
-                            'Nickname\xA0',
-                            _react2.default.createElement(
-                                _tooltip2.default,
-                                { title: 'What do you want other to call you?' },
-                                _react2.default.createElement(_icon2.default, { type: 'question-circle-o' })
-                            )
-                        ),
-                        hasFeedback: true }),
-                    getFieldDecorator('nickname', {
-                        rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }]
-                    })(_react2.default.createElement(_input2.default, null))
-                ),
-                _react2.default.createElement(
-                    FormItem,
-                    tailFormItemLayout,
+                    'div',
+                    { id: 'registerwrap' },
                     _react2.default.createElement(
-                        _button2.default,
-                        { type: 'primary', htmlType: 'submit' },
-                        'Register'
+                        _form2.default,
+                        { className: 'register-form', onSubmit: this.handleSubmit.bind(this) },
+                        _react2.default.createElement(
+                            FormItem,
+                            _extends({}, formItemLayout, { label: 'E-mail', hasFeedback: true }),
+                            getFieldDecorator('email', {
+                                rules: [{
+                                    type: 'email', message: 'This input is not valid E-mail!'
+                                }, {
+                                    required: true, message: 'Please input your E-mail!'
+                                }]
+                            })(_react2.default.createElement(_input2.default, null))
+                        ),
+                        _react2.default.createElement(
+                            FormItem,
+                            _extends({}, formItemLayout, { label: 'Password', hasFeedback: true }),
+                            getFieldDecorator('password', {
+                                rules: [{
+                                    required: true, message: 'Please input your password!'
+                                }, {
+                                    validator: this.checkConfirm.bind(this)
+                                }]
+                            })(_react2.default.createElement(_input2.default, { type: 'password' }))
+                        ),
+                        _react2.default.createElement(
+                            FormItem,
+                            _extends({}, formItemLayout, { label: 'Confirm Password', hasFeedback: true }),
+                            getFieldDecorator('confirm', {
+                                rules: [{
+                                    required: true, message: 'Please confirm your password!'
+                                }, {
+                                    validator: this.checkPassword.bind(this)
+                                }]
+                            })(_react2.default.createElement(_input2.default, { type: 'password', onBlur: this.handleConfirmBlur.bind(this) }))
+                        ),
+                        _react2.default.createElement(
+                            FormItem,
+                            _extends({}, formItemLayout, {
+                                label: _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    'Nickname\xA0',
+                                    _react2.default.createElement(
+                                        _tooltip2.default,
+                                        { title: 'What do you want other to call you?' },
+                                        _react2.default.createElement(_icon2.default, { type: 'question-circle-o' })
+                                    )
+                                ),
+                                hasFeedback: true }),
+                            getFieldDecorator('nickname', {
+                                rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }]
+                            })(_react2.default.createElement(_input2.default, null))
+                        ),
+                        _react2.default.createElement(
+                            FormItem,
+                            tailFormItemLayout,
+                            _react2.default.createElement(
+                                _button2.default,
+                                { type: 'primary', htmlType: 'submit' },
+                                'Register'
+                            )
+                        )
                     )
                 )
             );

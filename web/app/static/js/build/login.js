@@ -5118,48 +5118,61 @@ var LoginForm = function (_Component) {
             var getFieldDecorator = this.props.form.getFieldDecorator;
 
             return _react2.default.createElement(
-                _form2.default,
-                { onSubmit: this.handleSubmit.bind(this), className: 'login-form' },
+                'div',
+                { id: 'loginpagewrap' },
                 _react2.default.createElement(
-                    FormItem,
+                    'p',
                     null,
-                    getFieldDecorator('userName', {
-                        rules: [{ required: true, message: 'Please input your username!' }]
-                    })(_react2.default.createElement(_input2.default, { prefix: _react2.default.createElement(_icon2.default, { type: 'user', style: { fontSize: 13 } }), placeholder: 'Username' }))
+                    'Sign in to Demo'
                 ),
                 _react2.default.createElement(
-                    FormItem,
-                    null,
-                    getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your Password!' }]
-                    })(_react2.default.createElement(_input2.default, { prefix: _react2.default.createElement(_icon2.default, { type: 'lock', style: { fontSize: 13 } }), type: 'password', placeholder: 'Password' }))
-                ),
-                _react2.default.createElement(
-                    FormItem,
-                    null,
-                    getFieldDecorator('remember', {
-                        valuePropName: 'checked',
-                        initialValue: false
-                    })(_react2.default.createElement(
-                        _checkbox2.default,
-                        null,
-                        'Remember me'
-                    )),
+                    'div',
+                    { id: 'loginWrap' },
                     _react2.default.createElement(
-                        'a',
-                        { className: 'login-form-forgot', href: '#' },
-                        'Forgot password'
-                    ),
-                    _react2.default.createElement(
-                        _button2.default,
-                        { type: 'primary', htmlType: 'submit', className: 'login-form-button' },
-                        'Log in'
-                    ),
-                    'Or ',
-                    _react2.default.createElement(
-                        'a',
-                        { href: 'register' },
-                        'register now!'
+                        _form2.default,
+                        { onSubmit: this.handleSubmit.bind(this), className: 'login-form' },
+                        _react2.default.createElement(
+                            FormItem,
+                            null,
+                            getFieldDecorator('userName', {
+                                rules: [{ required: true, message: 'Please input your username!' }]
+                            })(_react2.default.createElement(_input2.default, { prefix: _react2.default.createElement(_icon2.default, { type: 'user', style: { fontSize: 13 } }), placeholder: 'Username' }))
+                        ),
+                        _react2.default.createElement(
+                            FormItem,
+                            null,
+                            getFieldDecorator('password', {
+                                rules: [{ required: true, message: 'Please input your Password!' }]
+                            })(_react2.default.createElement(_input2.default, { prefix: _react2.default.createElement(_icon2.default, { type: 'lock', style: { fontSize: 13 } }), type: 'password', placeholder: 'Password' }))
+                        ),
+                        _react2.default.createElement(
+                            FormItem,
+                            null,
+                            getFieldDecorator('remember', {
+                                valuePropName: 'checked',
+                                initialValue: false
+                            })(_react2.default.createElement(
+                                _checkbox2.default,
+                                null,
+                                'Remember me'
+                            )),
+                            _react2.default.createElement(
+                                'a',
+                                { className: 'login-form-forgot', href: '#' },
+                                'Forgot password'
+                            ),
+                            _react2.default.createElement(
+                                _button2.default,
+                                { type: 'primary', htmlType: 'submit', className: 'login-form-button' },
+                                'Log in'
+                            ),
+                            'Or ',
+                            _react2.default.createElement(
+                                'a',
+                                { href: 'register' },
+                                'register now!'
+                            )
+                        )
                     )
                 )
             );

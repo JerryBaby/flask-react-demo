@@ -72,60 +72,65 @@ class RegistrationForm extends Component {
         };
 
         return (
-            <Form className="register-form" onSubmit={this.handleSubmit.bind(this)}>
-              <FormItem {...formItemLayout} label="E-mail" hasFeedback>
-                {getFieldDecorator('email', {
-                    rules: [{
-                        type: 'email', message: 'This input is not valid E-mail!',
-                    }, {
-                        required: true, message: 'Please input your E-mail!',
-                    }],
-                })(
-                    <Input />
-                )}
-              </FormItem>
-              <FormItem {...formItemLayout} label="Password" hasFeedback>
-                {getFieldDecorator('password', {
-                    rules: [{
-                        required: true, message: 'Please input your password!',
-                    }, {
-                        validator: this.checkConfirm.bind(this),
-                    }],
-                })(
-                    <Input type="password" />
-                )}
-              </FormItem>
-              <FormItem {...formItemLayout} label="Confirm Password" hasFeedback>
-                {getFieldDecorator('confirm', {
-                    rules: [{
-                        required: true, message: 'Please confirm your password!',
-                    }, {
-                        validator: this.checkPassword.bind(this)
-                    }],
-                })(
-                    <Input type="password" onBlur={this.handleConfirmBlur.bind(this)} />
-                )}
-              </FormItem>
-              <FormItem {...formItemLayout}
-                label={(
-                    <span>
-                      Nickname&nbsp;
-                      <Tooltip title="What do you want other to call you?">
-                        <Icon type="question-circle-o" />
-                      </Tooltip>
-                    </span>
-                )}
-                hasFeedback>
-                {getFieldDecorator('nickname', {
-                    rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
-                })(
-                    <Input />
-                )}
-              </FormItem>
-              <FormItem {...tailFormItemLayout}>
-                <Button type="primary" htmlType="submit">Register</Button>
-              </FormItem>
-            </Form>
+            <div id="registerpagewrap">
+              <p>Sing up to Demo</p>
+              <div id="registerwrap">
+                <Form className="register-form" onSubmit={this.handleSubmit.bind(this)}>
+                  <FormItem {...formItemLayout} label="E-mail" hasFeedback>
+                    {getFieldDecorator('email', {
+                        rules: [{
+                            type: 'email', message: 'This input is not valid E-mail!',
+                        }, {
+                            required: true, message: 'Please input your E-mail!',
+                        }],
+                    })(
+                        <Input />
+                    )}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label="Password" hasFeedback>
+                    {getFieldDecorator('password', {
+                        rules: [{
+                            required: true, message: 'Please input your password!',
+                        }, {
+                            validator: this.checkConfirm.bind(this),
+                        }],
+                    })(
+                        <Input type="password" />
+                    )}
+                  </FormItem>
+                  <FormItem {...formItemLayout} label="Confirm Password" hasFeedback>
+                    {getFieldDecorator('confirm', {
+                        rules: [{
+                            required: true, message: 'Please confirm your password!',
+                        }, {
+                            validator: this.checkPassword.bind(this)
+                        }],
+                    })(
+                        <Input type="password" onBlur={this.handleConfirmBlur.bind(this)} />
+                    )}
+                  </FormItem>
+                  <FormItem {...formItemLayout}
+                    label={(
+                        <span>
+                          Nickname&nbsp;
+                          <Tooltip title="What do you want other to call you?">
+                            <Icon type="question-circle-o" />
+                          </Tooltip>
+                        </span>
+                    )}
+                    hasFeedback>
+                    {getFieldDecorator('nickname', {
+                        rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+                    })(
+                        <Input />
+                    )}
+                  </FormItem>
+                  <FormItem {...tailFormItemLayout}>
+                    <Button type="primary" htmlType="submit">Register</Button>
+                  </FormItem>
+                </Form>
+              </div>
+            </div>
         );
     }
 }
