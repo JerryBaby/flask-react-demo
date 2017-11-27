@@ -15,11 +15,19 @@ class serverRole(db.Model):
 class Platform(db.Model):
     __tablename__ = 'platforms'
     id = db.Column(db.Integer, primary_key=True)
-    platname = db.Column(db.String(32), nullable=False, unique=True)
+    platname = db.Column(db.String(32), nullable=False)
+    regioname = db.Column(db.String(32), nullable=False)
     servers = db.relationship('Servers', backref='platform')
 
     def __repr__(self):
         return '<Platform %r>' % self.platname
+
+
+class Attribute(db.Model):
+    __tablename__ = 'attributes'
+    id = db.Column(db.Integer, primary_key=True)
+    attrname = db.Column(db.String(32), nullable=False, unique=True)
+    servers = db.relationship('Servers', backref='attribute')
 
 
 class Status(db.Model):
@@ -37,7 +45,8 @@ class Servers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     hostname = db.Column(db.String(64), unique=True, index=True)
     role_id = db.Column(db.Integer, db.ForeignKey('server_roles.id'))
-    plat_id= db.Column(db.Integer, db.ForeignKey('platforms.id'))
+    plat_id = db.Column(db.Integer, db.ForeignKey('platforms.id'))
+    attr_id = db.Column(db.Integer, db.ForeignKey('attributes.id'))
     servicestatus = db.Column(db.Integer, db.ForeignKey('server_status.id'))
     ip = db.relationship('IP', backref='server')
 
@@ -58,15 +67,17 @@ class IPType(db.Model):
 class IP(db.Model):
     __tablename__ = 'ip'
     id = db.Column(db.Integer, primary_key=True)
-    address = db.Column(db.Integer, nullable=False, unique=True)
-    type = db.Column(db.Integer, db.ForeignKey('ip_type.id'))
+    address_hash = db.Column(db.Integer, nullable=False, unique=True)
+    type_id = db.Column(db.Integer, db.ForeignKey('ip_type.id'))
     allocated = db.Column(db.Integer, db.ForeignKey('servers.id'))
 
-    def read(self):
-        return socket.inet_ntoa(struct.pack('I', socket.htonl(self.address)))
+    @property
+    def address(self):
+        return socket.inet_ntoa(struct.pack('I', socket.htonl(self.address_hash)))
 
-    def store(self, str_address):
-        self.address = socket.ntohl(struct.unpack("I",socket.inet_aton(str_address))[0])
+    @address.setter
+    def address(self, str_address):
+        self.address_hash = socket.ntohl(struct.unpack("I",socket.inet_aton(str_address))[0])
 
     def __repr__(self):
         return '<IP %r>' % self.read()

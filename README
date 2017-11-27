@@ -21,6 +21,8 @@
 #### API
 
 * http://localhost/server_api/*: 服务器资产相关接口
+    * http://localhost/server_api/get_servers: 获取服务器资产信息
+
 * http://localhost/user_api/*: 用户相关接口
 * http://localhost/cmdb_api/*: 配置相关接口
 

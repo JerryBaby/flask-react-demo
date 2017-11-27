@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom';
 import { Layout } from 'antd';
 import SideBar from './sider';
 import HeaderContent from './header';
-import BodyContent from './content';
+import BodyContent from './content/content';
 import FooterContent from './footer';
 
 
 class Navigation extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            pathname: 'nishishadan',
-        }
-    }
+    //constructor(props) {
+        //super(props);
+        //this.state = {
+            //pathname: 'nishishadan',
+        //}
+    //}
 
     render() {
         return (
@@ -21,9 +21,7 @@ class Navigation extends Component {
               <SideBar cKey="servers" />
               <Layout>
                 <HeaderContent />
-                <BodyContent>
-                  {this.state.pathname}
-                </BodyContent>
+                <BodyContent />
                 <FooterContent />
               </Layout>
             </Layout>
