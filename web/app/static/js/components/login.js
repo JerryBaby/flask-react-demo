@@ -25,19 +25,18 @@ class LoginForm extends Component {
                     body: data,
                 }).then((res) => {
                     if (res.ok) {
-                        console.log(res)
-                        res.json().then((data) => {
-                            if (data.code != 0) {
-                                message.error(data.result);
-                            } else {
-                                location.href = '/';
-                            }
-                        });
+                        return res.json();
                     } else {
                         console.log('Bad request: ', res.url, 'statue: ', res.status);
                     }
-                }, (e) => {
-                    console.log('Fetch failed: ',e);
+                }).then((data) => {
+                    if (data.code != 0) {
+                        message.error(data.result);
+                    } else {
+                        location.href = '/';
+                    }
+                }).catch((e) => {
+                    console.log('Fetch failed: ', e);
                 });
             }
         });

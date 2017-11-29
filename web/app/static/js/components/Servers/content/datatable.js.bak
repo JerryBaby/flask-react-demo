@@ -13,20 +13,11 @@ class ServerTable extends Component {
         super(props);
         this.state = {
             tData: [],
-            roleData: [],
-            platData: [],
-            regionData: [],
-            attrData: [],
-            statusData: [],
         };
     }
 
     componentDidMount() {
         this.fetchTableData();
-        this.fetchServerRole();
-        this.fetchPlatform();
-        this.fetchAttribute();
-        this.fetchStatus();
         // 获取角色 云平台 区域 属性 状态
     }
 
@@ -57,7 +48,13 @@ class ServerTable extends Component {
             {
                 title: '角色',
                 dataIndex: 'role',
-                filters: this.state.roleData,
+                filters: [{
+                    text: 'edge',
+                    value: 'edge',
+                }, {
+                    text: 'relay',
+                    value: 'relay',
+                }],
                 onFilter: (value, record) => { return record.role === value },
                 sorter: (a, b) => { return a.role.localeCompare(b.role) },
             },

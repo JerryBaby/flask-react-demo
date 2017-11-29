@@ -5095,18 +5095,17 @@ var LoginForm = function (_Component) {
                         body: data
                     }).then(function (res) {
                         if (res.ok) {
-                            console.log(res);
-                            res.json().then(function (data) {
-                                if (data.code != 0) {
-                                    _message3.default.error(data.result);
-                                } else {
-                                    location.href = '/';
-                                }
-                            });
+                            return res.json();
                         } else {
                             console.log('Bad request: ', res.url, 'statue: ', res.status);
                         }
-                    }, function (e) {
+                    }).then(function (data) {
+                        if (data.code != 0) {
+                            _message3.default.error(data.result);
+                        } else {
+                            location.href = '/';
+                        }
+                    }).catch(function (e) {
                         console.log('Fetch failed: ', e);
                     });
                 }

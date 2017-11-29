@@ -2,7 +2,7 @@ import socket, struct
 from . import db
 
 
-class serverRole(db.Model):
+class serveRole(db.Model):
     __tablename__ = 'server_roles'
     id = db.Column(db.Integer, primary_key=True)
     rolename = db.Column(db.String(32), nullable=False, unique=True)
@@ -80,4 +80,4 @@ class IP(db.Model):
         self.address_hash = socket.ntohl(struct.unpack("I",socket.inet_aton(str_address))[0])
 
     def __repr__(self):
-        return '<IP %r>' % self.read()
+        return '<IP %r>' % self.address
