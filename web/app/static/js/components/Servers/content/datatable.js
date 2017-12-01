@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Icon, Popconfirm } from 'antd';
+import Search from './header';
 
 
 //编辑和删除操作在这个文件里增加
@@ -13,6 +14,8 @@ class ServerTable extends Component {
         super(props);
         this.state = {
             tData: [],
+            hostData: [],
+            ipData: [],
             roleData: [],
             platData: [],
             regionData: [],
@@ -37,8 +40,18 @@ class ServerTable extends Component {
                 console.log('Bad request: ', res.url, 'statue: ', res.status);
             }
         }).then((data) => {
+            let hostData = [];
+            let ipData = [];
+            for (let x of data.result) {
+                hostData.push({"hostname": x.hostname});
+                for (let i of x.ip) {
+                    ipData.push({"ip": i.replace(/\s\(\S*\)/, "")});
+                }
+            }
             this.setState({
                 tData: data.result,
+                hostData: hostData,
+                ipData: ipData,
             });
         }).catch((e) => {
             console.log('Fetch failed: ', e);
@@ -101,6 +114,18 @@ class ServerTable extends Component {
         }).catch((e) => {
             console.log('Fetch failed: ', e);
         });
+    }
+
+    searchTable(data) {
+        if (data.code === 0) {
+            this.setState({
+                tData: data.result,
+            });
+        } else {
+            this.setState({
+                tData: [],
+            });
+        }
     }
 
     render() {
@@ -186,7 +211,10 @@ class ServerTable extends Component {
         ];
 
         return (
-            <Table columns={columns} dataSource={this.state.tData} />
+            <div>
+              <Search hostData={this.state.hostData} ipData={this.state.ipData} searchTable={this.searchTable.bind(this)} />
+              <Table columns={columns} dataSource={this.state.tData} />
+            </div>
         );
     }
 }

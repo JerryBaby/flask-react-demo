@@ -18,7 +18,7 @@ class LoginForm extends Component {
                 fetch('/auth/login', {
                     method: 'POST',
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
                     },
                     // keep cookie
                     credentials: 'include',
