@@ -9,6 +9,9 @@
 * 2: user not registered.
 * 3: incorrect password.
 * 4: no data.
+* 5: duplicate host name.
+* 6: existing address.
+* 7: invalid IP address.
 * ...
 
 ## URL:

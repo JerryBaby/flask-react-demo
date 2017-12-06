@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Cascader, Form, Input, Modal, Radio, Select } from 'antd';
+import { Button, Cascader, Form, Input, message, Modal, Radio, Select } from 'antd';
 
 
 const FormItem = Form.Item;
@@ -22,26 +22,58 @@ class ModalDialog extends Component {
         });
     }
 
-    handleCancel() {
-        this.setState({
-            visible: false,
-        });
-    }
-
     afterClose() {
-        console.log('closed.');
         this.props.form.resetFields();
+        location.href = 'servers';
     }
 
     handleSubmit(e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('received values of form: ', values);
-                this.setState({
-                    visible: false,
+                if (!values.lanIp) {
+                    values.lanIp = '';
+                }
+                if (!values.wanIp) {
+                    values.wanIp = '';
+                }
+                if (!values.virtualIp) {
+                    values.virtualIp = '';
+                }
+                let data = JSON.stringify(values);
+
+                fetch('/server_api/server_add', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: 'include',
+                    body: data,
+                }).then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        console.log('Bad request: ', res.url, 'statue: ', res.status);
+                    }
+                }).then((data) => {
+                    if (data.code != 0) {
+                        message.error(data.result);
+                    } else {
+                        message.success(data.result);
+                        this.setState({
+                            visible: false,
+                        });
+                    }
+                }).catch((e) => {
+                    console.log('Fetch faield: ', e);
                 });
             }
+        });
+    }
+
+    handleCancel() {
+        this.setState({
+            visible: false,
         });
     }
 
@@ -65,7 +97,7 @@ class ModalDialog extends Component {
 
         return (
             <div>
-              <Button type="primary" onClick={this.showModal.bind(this)}>Add</Button>
+              <Button type="primary" onClick={this.showModal.bind(this)}>添加服务器</Button>
               <Modal
                 afterClose={this.afterClose.bind(this)}
                 okText="添加"
@@ -86,6 +118,7 @@ class ModalDialog extends Component {
                   <FormItem {...formItemLayout} label="内网IP: ">
                     {getFieldDecorator('lanIp', {
                         rules: [{ pattern: ipRegExp, message: 'Invalid ip address!' }],
+                        validateTrigger: 'onBlur',
                     })(
                         <Input placeholder="内网地址，多个IP用 ',' 分隔" />
                     )}
@@ -93,6 +126,7 @@ class ModalDialog extends Component {
                   <FormItem {...formItemLayout} label="公网IP: ">
                     {getFieldDecorator('wanIp', {
                         rules: [{ pattern: ipRegExp, message: 'Invalid ip address!' }],
+                        validateTrigger: 'onBlur',
                     })(
                         <Input placeholder="公网地址，多个IP用 ',' 分隔" />
                     )}
@@ -100,6 +134,7 @@ class ModalDialog extends Component {
                   <FormItem {...formItemLayout} label="VIP: ">
                     {getFieldDecorator('virtualIp', {
                         rules: [{ pattern: ipRegExp, message: 'Invalid ip address!' }],
+                        validateTrigger: 'onBlur',
                     })(
                         <Input placeholder="虚 IP，多个IP用 ',' 分隔" />
                     )}

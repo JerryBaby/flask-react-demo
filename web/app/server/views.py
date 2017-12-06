@@ -2,9 +2,9 @@
 import socket, struct
 from flask import request, jsonify
 from . import server
-from .. import check_param
-from ..data_models import serveRole, Platform, Status, \
-    Servers, IPType, IP
+from .. import db, check_param
+from ..data_models import serveRole, Platform, Attribute, \
+        Status, Servers, IPType, IP
 
 
 @server.route('/get_servers')
@@ -52,7 +52,100 @@ def get_servers():
         })
     return jsonify({'code': 0, 'result': res})
 
-#server add
+
+@server.route('/server_add', methods=['POST'])
+def server_add():
+    data = request.json
+    if data is not None and \
+            check_param(data.keys(), [
+                'attribute',
+                'lanIp',
+                'platform',
+                'role',
+                'serverName',
+                'status',
+                'virtualIp',
+                'wanIp',
+            ]):
+        server = Servers.query.filter_by(hostname=data['serverName']).first()
+        if server is not None:
+            return jsonify({'code': 5, 'result': 'duplicate host name.'})
+        else:
+            lanIps = []
+            for l in data['lanIp'].split(','):
+                try:
+                    ip = IP.query.filter_by(address_hash=socket.ntohl(
+                        struct.unpack("I",socket.inet_aton(l))[0])).first()
+                except:
+                    ip = None
+                lanIps.append(ip)
+            wanIps = []
+            for w in data['wanIp'].split(','):
+                try:
+                    ip = IP.query.filter_by(address_hash=socket.ntohl(
+                        struct.unpack("I",socket.inet_aton(w))[0])).first()
+                except:
+                    ip = None
+                wanIps.append(ip)
+            virtualIps = []
+            for v in data['virtualIp'].split():
+                try:
+                    ip = IP.query.filter_by(address_hash=socket.ntohl(
+                        struct.unpack("I",socket.inet_aton(v))[0])).first()
+                except:
+                    ip = None
+                virtualIps.append(ip)
+
+            for ip in lanIps+wanIps+virtualIps:
+                if ip is not None:
+                    return jsonify({'code': 6, 'result': 'existing address %s' % ip})
+
+            server = Servers(hostname=data['serverName'])
+            server.server_role = serveRole.query.filter_by(rolename=data['role']).first()
+            server.platform = Platform.query.filter_by(platname=data['platform'][0],regioname=data['platform'][1]).first()
+            server.attribute = Attribute.query.filter_by(attrname=data['attribute']).first()
+            server.server_status = Status.query.filter_by(statusname=data['status']).first()
+
+            l_IPs = []
+            w_IPs = []
+            v_IPs = []
+            for l in data['lanIp'].split(','):
+                if l != '':
+                    try:
+                        ip = IP(address=l)
+                        ip.ip_type = IPType.query.filter_by(ipname=u'内网').first()
+                        ip.server = server
+                        l_IPs.append(ip)
+                    except:
+                        return jsonify({'code': 7, 'result': 'invalid IP address.'})
+            for w in data['wanIp'].split(','):
+                if w != '':
+                    try:
+                        ip = IP(address=w)
+                        ip.ip_type = IPType.query.filter_by(ipname=u'公网').first()
+                        ip.server = server
+                        w_IPs.append(ip)
+                    except:
+                        return jsonify({'code': 7, 'result': 'invalid IP address.'})
+            for v in data['virtualIp'].split(','):
+                if v != '':
+                    try:
+                        ip = IP(address=v)
+                        ip.ip_type = IPType.query.filter_by(ipname=u'VIP').first()
+                        ip.server = server
+                        v_IPs.append(ip)
+                    except:
+                        return jsonify({'code': 7, 'result': 'invalid IP address.'})
+
+            db.session.add(server)
+            db.session.add_all(l_IPs+w_IPs+v_IPs)
+            db.session.commit()
+
+            return jsonify({'code': 0, 'result': 'add server ok.'})
+    else:
+        return jsonify({'code': 1, 'result': 'invalid parameters.'})
+
+
 #server del
 #server modify
 @server.route('/search', methods=['POST'])

@@ -29,6 +29,9 @@ class Attribute(db.Model):
     attrname = db.Column(db.String(32), nullable=False, unique=True)
     servers = db.relationship('Servers', backref='attribute')
 
+    def __repr__(self):
+        return '<Attribute %r>' % self.attrname
+
 
 class Status(db.Model):
     __tablename__ = 'server_status'
