@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { Row, Col, Select, Button } from 'antd';
+import ServerAddModal from './serveradd';
 
 const Option = Select.Option;
 
@@ -84,6 +85,12 @@ class Search extends Component {
                 </Col>
                 <Col span={6}>
                   <Button type="primary" disabled={isDisabled} onClick={this.handleSearch.bind(this)}>Search</Button>
+                </Col>
+                <Col span={6}>
+                  <ServerAddModal
+                    cascadeData={this.props.cascadeData}
+                    roleData={this.props.roleData}
+                  />
                 </Col>
               </Row>
             </div>

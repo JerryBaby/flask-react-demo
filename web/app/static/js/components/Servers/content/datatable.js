@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { Table, Icon, Popconfirm } from 'antd';
-import Search from './header';
+import Search from './search';
 
 
 //编辑和删除操作在这个文件里增加
@@ -19,6 +19,7 @@ class ServerTable extends Component {
             roleData: [],
             platData: [],
             regionData: [],
+            cascadeData: [],
         };
     }
 
@@ -43,9 +44,9 @@ class ServerTable extends Component {
             let hostData = [];
             let ipData = [];
             for (let x of data.result) {
-                hostData.push({"hostname": x.hostname});
+                hostData.push({'hostname': x.hostname});
                 for (let i of x.ip) {
-                    ipData.push({"ip": i.replace(/\s\(\S*\)/, "")});
+                    ipData.push({'ip': i.replace(/\s\(\S*\)/, "")});
                 }
             }
             this.setState({
@@ -95,8 +96,10 @@ class ServerTable extends Component {
             let platData = [];
             let regionData = [];
             let regions = [];
+            let cascadeData = [];
             for (let x of data.result) {
                 platData.push({text: x.platform, value: x.platform});
+                cascadeData.push({'platform': x.platform, 'region': x.region});
                 let region = x.region;
                 for (let x of region) {
                     if (regions.indexOf(x) === -1) {
@@ -110,6 +113,7 @@ class ServerTable extends Component {
             this.setState({
                 platData: platData,
                 regionData: regionData,
+                cascadeData: cascadeData,
             });
         }).catch((e) => {
             console.log('Fetch failed: ', e);
@@ -203,7 +207,7 @@ class ServerTable extends Component {
                     return (
                     <span>
                         <Icon type="edit" onClick={() => console.log(record.key)} />&nbsp;&nbsp;
-                        <Popconfirm title="Sure to delete?"><Icon type="delete" /></Popconfirm>
+                        <Popconfirm title="确认删除？"><Icon type="delete" /></Popconfirm>
                     </span>
                     );
                 },
@@ -212,7 +216,12 @@ class ServerTable extends Component {
 
         return (
             <div>
-              <Search hostData={this.state.hostData} ipData={this.state.ipData} searchTable={this.searchTable.bind(this)} />
+              <Search
+                cascadeData={this.state.cascadeData}
+                hostData={this.state.hostData}
+                ipData={this.state.ipData}
+                roleData={this.state.roleData}
+                searchTable={this.searchTable.bind(this)} />
               <Table columns={columns} dataSource={this.state.tData} />
             </div>
         );
