@@ -137,17 +137,71 @@ def server_add():
                     except:
                         return jsonify({'code': 7, 'result': 'invalid IP address.'})
 
-            db.session.add(server)
-            db.session.add_all(l_IPs+w_IPs+v_IPs)
-            db.session.commit()
+            try:
+                db.session.add(server)
+                db.session.add_all(l_IPs+w_IPs+v_IPs)
+                db.session.commit()
+                # return new server
+                id = server.id
+                hostname = server.hostname
+                role = server.server_role.rolename
+                ips = ['%s (%s)' % (x.address, x.ip_type.ipname) for x in server.ip]
+                platform = server.platform.platname
+                region = server.platform.regioname
+                attribute = server.attribute.attrname
+                status = server.server_status.statusname
+                res = {
+                    'key': id,
+                    'hostname': hostname,
+                    'role': role,
+                    'ip': ips,
+                    'platform': platform,
+                    'region': region,
+                    'attribute': attribute,
+                    'status': status,
+                }
+                return jsonify({'code': 0, 'result': res})
+            except:
+                return jsonify({'code': 8, 'result': 'database session exception.'})
 
-            return jsonify({'code': 0, 'result': 'add server ok.'})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
 
 
-#server del
+@server.route('/server_del', methods=['POST'])
+def server_del():
+    data = request.json
+    if data is not None and \
+            check_param(data.keys(), ['id']):
+        server = Servers.query.filter_by(id=data['id']).first()
+        if server is not None:
+            ips = server.ip
+            try:
+                for ip in ips:
+                    db.session.delete(ip)
+                db.session.delete(server)
+                db.session.commit()
+                return jsonify({'code': 0, 'result': 'delete server ok.'})
+            except:
+                return jsonify({'code': 8, 'result': 'database session exception.'})
+        else:
+            return jsonify({'code': 4, 'result': 'no data.'})
+    else:
+        return jsonify({'code': 1, 'result': 'invalid parameters.'})
+
+
+
+
+
+
+
+
 #server modify
+
+
+
+
+
 @server.route('/search', methods=['POST'])
 def search():
     res = []

@@ -12,6 +12,7 @@
 * 5: duplicate host name.
 * 6: existing address.
 * 7: invalid IP address.
+* 8: database session exception.
 * ...
 
 ## URL:

@@ -89,6 +89,7 @@ class Search extends Component {
                 <Col span={6}>
                   <ServerAddModal
                     cascadeData={this.props.cascadeData}
+                    handleAddServer={this.props.handleAddServer}
                     roleData={this.props.roleData}
                   />
                 </Col>

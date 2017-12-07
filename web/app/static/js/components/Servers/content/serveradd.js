@@ -24,7 +24,6 @@ class ModalDialog extends Component {
 
     afterClose() {
         this.props.form.resetFields();
-        location.href = 'servers';
     }
 
     handleSubmit(e) {
@@ -40,6 +39,7 @@ class ModalDialog extends Component {
                 if (!values.virtualIp) {
                     values.virtualIp = '';
                 }
+
                 let data = JSON.stringify(values);
 
                 fetch('/server_api/server_add', {
@@ -59,7 +59,8 @@ class ModalDialog extends Component {
                     if (data.code != 0) {
                         message.error(data.result);
                     } else {
-                        message.success(data.result);
+                        message.success('add server ok.');
+                        this.props.handleAddServer(data.result);
                         this.setState({
                             visible: false,
                         });

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Table, Icon, Popconfirm } from 'antd';
+import { Table, Icon, message, Popconfirm } from 'antd';
 import Search from './search';
 
 
@@ -132,6 +132,47 @@ class ServerTable extends Component {
         }
     }
 
+    handleAddServer(data) {
+        //添加服务器的回调
+        //使用新数据渲染列表实现动态更新
+        const tData = [...this.state.tData, data];
+        this.setState({
+            tData: tData,
+        });
+    }
+
+    onDelete(key) {
+        //fetch 调用删除接口删除记录
+        //根据key更新 tData 重新渲染
+        let data = JSON.stringify({'id': key});
+        fetch('/server_api/server_del', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: 'include',
+            body: data,
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                console.log('Bad request: ', res.url, 'statue: ', res.status);
+            }
+        }).then((data) => {
+            if (data.code != 0) {
+                message.error(data.result);
+            } else {
+                const tData = [...this.state.tData];
+                this.setState({
+                    tData: tData.filter(item => item.key != key)
+                });
+                message.success(data.result);
+            }
+        }).catch((e) => {
+            console.log('Fetch failed: ', e);
+        });
+    }
+
     render() {
         const columns = [
             {
@@ -207,7 +248,9 @@ class ServerTable extends Component {
                     return (
                     <span>
                         <Icon type="edit" onClick={() => console.log(record.key)} />&nbsp;&nbsp;
-                        <Popconfirm title="确认删除？"><Icon type="delete" /></Popconfirm>
+                        <Popconfirm title="确认删除？" onConfirm={() => this.onDelete(record.key)}>
+                          <Icon type="delete" />
+                        </Popconfirm>
                     </span>
                     );
                 },
@@ -218,11 +261,12 @@ class ServerTable extends Component {
             <div>
               <Search
                 cascadeData={this.state.cascadeData}
+                handleAddServer={this.handleAddServer.bind(this)}
                 hostData={this.state.hostData}
                 ipData={this.state.ipData}
                 roleData={this.state.roleData}
                 searchTable={this.searchTable.bind(this)} />
-              <Table columns={columns} dataSource={this.state.tData} />
+              <Table columns={columns} dataSource={this.state.tData} bordered />
             </div>
         );
     }
