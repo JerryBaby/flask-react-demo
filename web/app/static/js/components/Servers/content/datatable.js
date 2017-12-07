@@ -13,13 +13,12 @@ class ServerTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            datas: [],
             tData: [],
-            hostData: [],
-            ipData: [],
-            roleData: [],
-            platData: [],
-            regionData: [],
-            cascadeData: [],
+            roleData: [],       //角色筛选条件; serveraddmodal 角色下拉菜单
+            platData: [],       //平台筛选条件
+            regionData: [],     //区域筛选条件
+            cascadeData: [],    // serveraddmodal 平台区域下拉菜单
         };
     }
 
@@ -41,18 +40,9 @@ class ServerTable extends Component {
                 console.log('Bad request: ', res.url, 'statue: ', res.status);
             }
         }).then((data) => {
-            let hostData = [];
-            let ipData = [];
-            for (let x of data.result) {
-                hostData.push({'hostname': x.hostname});
-                for (let i of x.ip) {
-                    ipData.push({'ip': i.replace(/\s\(\S*\)/, "")});
-                }
-            }
             this.setState({
+                datas: data.result,
                 tData: data.result,
-                hostData: hostData,
-                ipData: ipData,
             });
         }).catch((e) => {
             console.log('Fetch failed: ', e);
@@ -121,23 +111,20 @@ class ServerTable extends Component {
     }
 
     searchTable(data) {
-        if (data.code === 0) {
-            this.setState({
-                tData: data.result,
-            });
-        } else {
-            this.setState({
-                tData: [],
-            });
-        }
+        const tData = [...this.state.datas];
+        this.setState({
+            tData: tData.filter((item) => item.hostname === data.hostname),
+        });
     }
 
     handleAddServer(data) {
         //添加服务器的回调
         //使用新数据渲染列表实现动态更新
         const tData = [...this.state.tData, data];
+        const datas = [...this.state.datas, data];
         this.setState({
             tData: tData,
+            datas: datas,
         });
     }
 
@@ -163,8 +150,10 @@ class ServerTable extends Component {
                 message.error(data.result);
             } else {
                 const tData = [...this.state.tData];
+                const datas = [...this.state.datas];
                 this.setState({
-                    tData: tData.filter(item => item.key != key)
+                    tData: tData.filter(item => item.key != key),
+                    datas: datas.filter(item => item.key != key),
                 });
                 message.success(data.result);
             }
@@ -260,12 +249,11 @@ class ServerTable extends Component {
         return (
             <div>
               <Search
-                cascadeData={this.state.cascadeData}
-                handleAddServer={this.handleAddServer.bind(this)}
-                hostData={this.state.hostData}
-                ipData={this.state.ipData}
+                datas={this.state.datas}
                 roleData={this.state.roleData}
-                searchTable={this.searchTable.bind(this)} />
+                cascadeData={this.state.cascadeData}
+                searchTable={this.searchTable.bind(this)}
+                handleAddServer={this.handleAddServer.bind(this)} />
               <Table columns={columns} dataSource={this.state.tData} bordered />
             </div>
         );

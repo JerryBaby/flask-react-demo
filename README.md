@@ -31,7 +31,6 @@
     * http://localhost/server\_api/server\_add: 添加服务器
     * http://localhost/server\_api/server\_del: 删除服务器
     * http://localhost/server\_api/server\_modify: 修改服务器
-    * http://localhost/server\_api/search: 搜索服务器
     *
     * http://localhost/server\_api/get\_roles: 获取服务器角色信息
     * http://localhost/server\_api/role\_add: 添加服务器角色

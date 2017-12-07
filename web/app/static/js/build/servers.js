@@ -39040,13 +39040,12 @@ var ServerTable = function (_Component) {
         var _this = _possibleConstructorReturn(this, (ServerTable.__proto__ || Object.getPrototypeOf(ServerTable)).call(this, props));
 
         _this.state = {
+            datas: [],
             tData: [],
-            hostData: [],
-            ipData: [],
-            roleData: [],
-            platData: [],
-            regionData: [],
-            cascadeData: []
+            roleData: [], //角色筛选条件; serveraddmodal 角色下拉菜单
+            platData: [], //平台筛选条件
+            regionData: [], //区域筛选条件
+            cascadeData: [] // serveraddmodal 平台区域下拉菜单
         };
         return _this;
     }
@@ -39074,61 +39073,9 @@ var ServerTable = function (_Component) {
                     console.log('Bad request: ', res.url, 'statue: ', res.status);
                 }
             }).then(function (data) {
-                var hostData = [];
-                var ipData = [];
-                var _iteratorNormalCompletion = true;
-                var _didIteratorError = false;
-                var _iteratorError = undefined;
-
-                try {
-                    for (var _iterator = data.result[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                        var x = _step.value;
-
-                        hostData.push({ 'hostname': x.hostname });
-                        var _iteratorNormalCompletion2 = true;
-                        var _didIteratorError2 = false;
-                        var _iteratorError2 = undefined;
-
-                        try {
-                            for (var _iterator2 = x.ip[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                                var i = _step2.value;
-
-                                ipData.push({ 'ip': i.replace(/\s\(\S*\)/, "") });
-                            }
-                        } catch (err) {
-                            _didIteratorError2 = true;
-                            _iteratorError2 = err;
-                        } finally {
-                            try {
-                                if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                                    _iterator2.return();
-                                }
-                            } finally {
-                                if (_didIteratorError2) {
-                                    throw _iteratorError2;
-                                }
-                            }
-                        }
-                    }
-                } catch (err) {
-                    _didIteratorError = true;
-                    _iteratorError = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion && _iterator.return) {
-                            _iterator.return();
-                        }
-                    } finally {
-                        if (_didIteratorError) {
-                            throw _iteratorError;
-                        }
-                    }
-                }
-
                 _this2.setState({
-                    tData: data.result,
-                    hostData: hostData,
-                    ipData: ipData
+                    datas: data.result,
+                    tData: data.result
                 });
             }).catch(function (e) {
                 console.log('Fetch failed: ', e);
@@ -39150,27 +39097,27 @@ var ServerTable = function (_Component) {
                 }
             }).then(function (data) {
                 var roleData = [];
-                var _iteratorNormalCompletion3 = true;
-                var _didIteratorError3 = false;
-                var _iteratorError3 = undefined;
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
 
                 try {
-                    for (var _iterator3 = data.result[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-                        var x = _step3.value;
+                    for (var _iterator = data.result[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var x = _step.value;
 
                         roleData.push({ text: x.role, value: x.role });
                     }
                 } catch (err) {
-                    _didIteratorError3 = true;
-                    _iteratorError3 = err;
+                    _didIteratorError = true;
+                    _iteratorError = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
-                            _iterator3.return();
+                        if (!_iteratorNormalCompletion && _iterator.return) {
+                            _iterator.return();
                         }
                     } finally {
-                        if (_didIteratorError3) {
-                            throw _iteratorError3;
+                        if (_didIteratorError) {
+                            throw _iteratorError;
                         }
                     }
                 }
@@ -39201,80 +39148,80 @@ var ServerTable = function (_Component) {
                 var regionData = [];
                 var regions = [];
                 var cascadeData = [];
-                var _iteratorNormalCompletion4 = true;
-                var _didIteratorError4 = false;
-                var _iteratorError4 = undefined;
+                var _iteratorNormalCompletion2 = true;
+                var _didIteratorError2 = false;
+                var _iteratorError2 = undefined;
 
                 try {
-                    for (var _iterator4 = data.result[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-                        var x = _step4.value;
+                    for (var _iterator2 = data.result[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                        var x = _step2.value;
 
                         platData.push({ text: x.platform, value: x.platform });
                         cascadeData.push({ 'platform': x.platform, 'region': x.region });
                         var region = x.region;
-                        var _iteratorNormalCompletion6 = true;
-                        var _didIteratorError6 = false;
-                        var _iteratorError6 = undefined;
+                        var _iteratorNormalCompletion4 = true;
+                        var _didIteratorError4 = false;
+                        var _iteratorError4 = undefined;
 
                         try {
-                            for (var _iterator6 = region[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-                                var _x2 = _step6.value;
+                            for (var _iterator4 = region[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+                                var _x2 = _step4.value;
 
                                 if (regions.indexOf(_x2) === -1) {
                                     regions.push(_x2);
                                 }
                             }
                         } catch (err) {
-                            _didIteratorError6 = true;
-                            _iteratorError6 = err;
+                            _didIteratorError4 = true;
+                            _iteratorError4 = err;
                         } finally {
                             try {
-                                if (!_iteratorNormalCompletion6 && _iterator6.return) {
-                                    _iterator6.return();
+                                if (!_iteratorNormalCompletion4 && _iterator4.return) {
+                                    _iterator4.return();
                                 }
                             } finally {
-                                if (_didIteratorError6) {
-                                    throw _iteratorError6;
+                                if (_didIteratorError4) {
+                                    throw _iteratorError4;
                                 }
                             }
                         }
                     }
                 } catch (err) {
-                    _didIteratorError4 = true;
-                    _iteratorError4 = err;
+                    _didIteratorError2 = true;
+                    _iteratorError2 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion4 && _iterator4.return) {
-                            _iterator4.return();
+                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                            _iterator2.return();
                         }
                     } finally {
-                        if (_didIteratorError4) {
-                            throw _iteratorError4;
+                        if (_didIteratorError2) {
+                            throw _iteratorError2;
                         }
                     }
                 }
 
-                var _iteratorNormalCompletion5 = true;
-                var _didIteratorError5 = false;
-                var _iteratorError5 = undefined;
+                var _iteratorNormalCompletion3 = true;
+                var _didIteratorError3 = false;
+                var _iteratorError3 = undefined;
 
                 try {
-                    for (var _iterator5 = regions[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-                        var _x = _step5.value;
+                    for (var _iterator3 = regions[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+                        var _x = _step3.value;
 
                         regionData.push({ text: _x, value: _x });
                     }
                 } catch (err) {
-                    _didIteratorError5 = true;
-                    _iteratorError5 = err;
+                    _didIteratorError3 = true;
+                    _iteratorError3 = err;
                 } finally {
                     try {
-                        if (!_iteratorNormalCompletion5 && _iterator5.return) {
-                            _iterator5.return();
+                        if (!_iteratorNormalCompletion3 && _iterator3.return) {
+                            _iterator3.return();
                         }
                     } finally {
-                        if (_didIteratorError5) {
-                            throw _iteratorError5;
+                        if (_didIteratorError3) {
+                            throw _iteratorError3;
                         }
                     }
                 }
@@ -39291,15 +39238,12 @@ var ServerTable = function (_Component) {
     }, {
         key: 'searchTable',
         value: function searchTable(data) {
-            if (data.code === 0) {
-                this.setState({
-                    tData: data.result
-                });
-            } else {
-                this.setState({
-                    tData: []
-                });
-            }
+            var tData = [].concat(_toConsumableArray(this.state.datas));
+            this.setState({
+                tData: tData.filter(function (item) {
+                    return item.hostname === data.hostname;
+                })
+            });
         }
     }, {
         key: 'handleAddServer',
@@ -39307,8 +39251,10 @@ var ServerTable = function (_Component) {
             //添加服务器的回调
             //使用新数据渲染列表实现动态更新
             var tData = [].concat(_toConsumableArray(this.state.tData), [data]);
+            var datas = [].concat(_toConsumableArray(this.state.datas), [data]);
             this.setState({
-                tData: tData
+                tData: tData,
+                datas: datas
             });
         }
     }, {
@@ -39337,8 +39283,12 @@ var ServerTable = function (_Component) {
                     _message3.default.error(data.result);
                 } else {
                     var tData = [].concat(_toConsumableArray(_this5.state.tData));
+                    var datas = [].concat(_toConsumableArray(_this5.state.datas));
                     _this5.setState({
                         tData: tData.filter(function (item) {
+                            return item.key != key;
+                        }),
+                        datas: datas.filter(function (item) {
                             return item.key != key;
                         })
                     });
@@ -39466,12 +39416,11 @@ var ServerTable = function (_Component) {
                 'div',
                 null,
                 _react2.default.createElement(_search2.default, {
-                    cascadeData: this.state.cascadeData,
-                    handleAddServer: this.handleAddServer.bind(this),
-                    hostData: this.state.hostData,
-                    ipData: this.state.ipData,
+                    datas: this.state.datas,
                     roleData: this.state.roleData,
-                    searchTable: this.searchTable.bind(this) }),
+                    cascadeData: this.state.cascadeData,
+                    searchTable: this.searchTable.bind(this),
+                    handleAddServer: this.handleAddServer.bind(this) }),
                 _react2.default.createElement(_table2.default, { columns: columns, dataSource: this.state.tData, bordered: true })
             );
         }
@@ -50669,50 +50618,75 @@ var Search = function (_Component) {
     }, {
         key: 'handleSearch',
         value: function handleSearch() {
-            var _this2 = this;
-
-            var data = JSON.stringify({
+            var data = {
                 'hostname': this.state.hostValue,
                 'ip': this.state.ipValue
-            });
-
-            fetch('/server_api/search', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: 'include',
-                body: data
-            }).then(function (res) {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    console.log('Bad request: ', res.url, 'statue: ', res.status);
-                }
-            }).then(function (data) {
-                _this2.props.searchTable(data);
-            }).catch(function (e) {
-                console.log('Fetch failed: ', e);
-            });
+            };
+            this.props.searchTable(data);
         }
     }, {
         key: 'render',
         value: function render() {
+            var datas = this.props.datas;
             var isDisabled = this.state.hostValue || this.state.ipValue ? false : true;
-            var hostOptions = this.props.hostData.map(function (d) {
+            var hostOptions = datas.map(function (t) {
                 return _react2.default.createElement(
                     Option,
-                    { key: d.hostname },
-                    d.hostname
+                    { key: t.hostname },
+                    t.hostname
                 );
             });
-            var ipOptions = this.props.ipData.map(function (d) {
-                return _react2.default.createElement(
-                    Option,
-                    { key: d.ip },
-                    d.ip
-                );
-            });
+            var ipOptions = [];
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+                for (var _iterator = datas[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                    var ips = _step.value;
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
+
+                    try {
+                        for (var _iterator2 = ips.ip[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var ip = _step2.value;
+
+                            ipOptions.push(_react2.default.createElement(
+                                Option,
+                                { key: ip },
+                                ip
+                            ));
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
+                            }
+                        } finally {
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                _didIteratorError = true;
+                _iteratorError = err;
+            } finally {
+                try {
+                    if (!_iteratorNormalCompletion && _iterator.return) {
+                        _iterator.return();
+                    }
+                } finally {
+                    if (_didIteratorError) {
+                        throw _iteratorError;
+                    }
+                }
+            }
 
             return _react2.default.createElement(
                 'div',
@@ -50752,8 +50726,8 @@ var Search = function (_Component) {
                         { span: 6 },
                         _react2.default.createElement(_serveradd2.default, {
                             cascadeData: this.props.cascadeData,
-                            handleAddServer: this.props.handleAddServer,
-                            roleData: this.props.roleData
+                            roleData: this.props.roleData,
+                            handleAddServer: this.props.handleAddServer
                         })
                     )
                 )

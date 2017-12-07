@@ -40,35 +40,23 @@ class Search extends Component {
     }
 
     handleSearch() {
-        let data = JSON.stringify({
+        let data = {
             'hostname': this.state.hostValue,
             'ip': this.state.ipValue,
-        });
-
-        fetch('/server_api/search', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: 'include',
-            body: data,
-        }).then((res) => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                console.log('Bad request: ', res.url, 'statue: ', res.status);
-            }
-        }).then((data) => {
-            this.props.searchTable(data);
-        }).catch((e) => {
-            console.log('Fetch failed: ', e);
-        });
+        };
+        this.props.searchTable(data);
     }
 
     render() {
+        const datas = this.props.datas;
         let isDisabled = (this.state.hostValue || this.state.ipValue) ? false : true;
-        const hostOptions = this.props.hostData.map((d) => <Option key={d.hostname}>{d.hostname}</Option>);
-        const ipOptions = this.props.ipData.map((d) => <Option key={d.ip}>{d.ip}</Option>);
+        let hostOptions = datas.map((t) => <Option key={t.hostname}>{t.hostname}</Option>);
+        let ipOptions = [];
+        for (let ips of datas) {
+            for (let ip of ips.ip) {
+                ipOptions.push(<Option key={ip}>{ip}</Option>);
+            }
+        }
 
         return (
             <div style={{ margin: '10px' }}>
@@ -89,8 +77,8 @@ class Search extends Component {
                 <Col span={6}>
                   <ServerAddModal
                     cascadeData={this.props.cascadeData}
-                    handleAddServer={this.props.handleAddServer}
                     roleData={this.props.roleData}
+                    handleAddServer={this.props.handleAddServer}
                   />
                 </Col>
               </Row>
