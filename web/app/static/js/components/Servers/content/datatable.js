@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Icon, message, Popconfirm, Table } from 'antd';
+import { Button, Icon, message, Popconfirm, Table, Tooltip } from 'antd';
 import Search from './search';
 import './datatable.css';
 
@@ -276,13 +276,17 @@ class ServerTable extends Component {
                     return (
                     <span>
                         <ButtonGroup>
-                          <Button type="primary" size="small" ghost>
-                            <Icon type="edit" />
-                          </Button>
-                          <Popconfirm title="确认删除？" onConfirm={() => this.onDelete(record.key)}>
-                            <Button type="danger" size="small" ghost>
-                              <Icon type="delete" />
+                          <Tooltip title="编辑">
+                            <Button type="primary" size="small" ghost>
+                              <Icon type="edit" />
                             </Button>
+                          </Tooltip>
+                          <Popconfirm title="确认删除？" onConfirm={() => this.onDelete(record.key)}>
+                            <Tooltip title="删除">
+                              <Button type="danger" size="small" ghost>
+                                <Icon type="delete" />
+                              </Button>
+                            </Tooltip>
                           </Popconfirm>
                         </ButtonGroup>
                     </span>
