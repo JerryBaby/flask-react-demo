@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Table, Icon, message, Popconfirm } from 'antd';
+import { Button, Icon, message, Popconfirm, Table } from 'antd';
 import Search from './search';
+import './datatable.css';
 
 
-//编辑和删除操作在这个文件里增加
-//编辑操作显示modal
-//删除操作是Popconfirm
+const ButtonGroup = Button.Group;
 
 
 class ServerTable extends Component {
@@ -190,11 +189,15 @@ class ServerTable extends Component {
         const columns = [
             {
                 title: '服务器',
+                className: 'cell',
+                colSpan: 1,
                 dataIndex: 'hostname',
                 sorter: (a, b) => { return a.hostname.localeCompare(b.hostname) },
             },
             {
                 title: '角色',
+                className: 'cell',
+                colSpan: 1,
                 dataIndex: 'role',
                 filters: this.state.roleData,
                 onFilter: (value, record) => { return record.role === value },
@@ -202,6 +205,8 @@ class ServerTable extends Component {
             },
             {
                 title: 'IP',
+                className: 'cell',
+                colSpan: 1,
                 dataIndex: 'ip',
                 render: (text, record, index) => {
                     if (text.length > 0) {
@@ -217,6 +222,8 @@ class ServerTable extends Component {
             },
             {
                 title: '云平台',
+                className: 'cell',
+                colSpan: 1,
                 dataIndex: 'platform',
                 filters: this.state.platData,
                 onFilter: (value, record) => { return record.platform === value },
@@ -224,12 +231,16 @@ class ServerTable extends Component {
             },
             {
                 title: '区域',
+                className: 'cell',
+                colSpan: 1,
                 dataIndex: 'region',
                 filters: this.state.regionData,
                 onFilter: (value, record) => { return record.region === value },
             },
             {
                 title: '属性',
+                className: 'cell',
+                colSpan: 1,
                 dataIndex: 'attribute',
                 filters: [{
                     text: 'Virtual',
@@ -243,6 +254,8 @@ class ServerTable extends Component {
             },
             {
                 title: '状态',
+                className: 'cell',
+                colSpan: 1,
                 dataIndex: 'status',
                 filters: [{
                     text: '在线',
@@ -256,14 +269,22 @@ class ServerTable extends Component {
             },
             {
                 title: '操作',
+                className: 'cell',
+                colSpan: 1,
                 dataIndex: 'operation',
                 render: (text, record, index) => {
                     return (
                     <span>
-                        <Icon type="edit" onClick={() => console.log(record.key)} />&nbsp;&nbsp;
-                        <Popconfirm title="确认删除？" onConfirm={() => this.onDelete(record.key)}>
-                          <Icon type="delete" />
-                        </Popconfirm>
+                        <ButtonGroup>
+                          <Button type="primary" size="small" ghost>
+                            <Icon type="edit" />
+                          </Button>
+                          <Popconfirm title="确认删除？" onConfirm={() => this.onDelete(record.key)}>
+                            <Button type="danger" size="small" ghost>
+                              <Icon type="delete" />
+                            </Button>
+                          </Popconfirm>
+                        </ButtonGroup>
                     </span>
                     );
                 },

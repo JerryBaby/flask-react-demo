@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import { Button, Checkbox, Form, Icon, Input, message } from 'antd';
 
 
 const FormItem = Form.Item;

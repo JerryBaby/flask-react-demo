@@ -98,7 +98,7 @@ class ModalDialog extends Component {
 
         return (
             <div>
-              <Button type="primary" onClick={this.showModal.bind(this)}>添加服务器</Button>
+              <Button type="primary" shape="circle" icon="plus" onClick={this.showModal.bind(this)}></Button>
               <Modal
                 afterClose={this.afterClose.bind(this)}
                 okText="添加"

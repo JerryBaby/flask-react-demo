@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {Layout, Icon, Avatar} from 'antd';
+import { Avatar, Icon, Layout } from 'antd';
 import SidebarMenu from './menu';
 
 

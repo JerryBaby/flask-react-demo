@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Layout, Avatar } from 'antd';
+import { Avatar, Layout } from 'antd';
 
 
 const { Header } = Layout;
