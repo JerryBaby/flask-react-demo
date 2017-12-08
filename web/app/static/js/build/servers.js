@@ -39239,10 +39239,37 @@ var ServerTable = function (_Component) {
         key: 'searchTable',
         value: function searchTable(data) {
             var tData = [].concat(_toConsumableArray(this.state.datas));
+            var hostItem = tData.filter(function (item) {
+                return item.hostname === data.hostname;
+            });
+            var ipItem = tData.filter(function (item) {
+                return item.ip.indexOf(data.ip) != -1;
+            });
+
+            if (hostItem === ipItem) {
+                this.setState({
+                    tData: hostItem
+                });
+            } else if (hostItem.length === 0) {
+                this.setState({
+                    tData: ipItem
+                });
+            } else if (ipItem.length === 0) {
+                this.setState({
+                    tData: hostItem
+                });
+            } else {
+                this.setState({
+                    tData: hostItem.concat(ipItem)
+                });
+            }
+        }
+    }, {
+        key: 'handleClear',
+        value: function handleClear() {
+            var tData = [].concat(_toConsumableArray(this.state.datas));
             this.setState({
-                tData: tData.filter(function (item) {
-                    return item.hostname === data.hostname;
-                })
+                tData: tData
             });
         }
     }, {
@@ -39420,6 +39447,7 @@ var ServerTable = function (_Component) {
                     roleData: this.state.roleData,
                     cascadeData: this.state.cascadeData,
                     searchTable: this.searchTable.bind(this),
+                    handleClear: this.handleClear.bind(this),
                     handleAddServer: this.handleAddServer.bind(this) }),
                 _react2.default.createElement(_table2.default, { columns: columns, dataSource: this.state.tData, bordered: true })
             );
@@ -50600,6 +50628,7 @@ var Search = function (_Component) {
                 this.setState({
                     hostValue: ''
                 });
+                this.props.handleClear();
             }
         }
     }, {
@@ -50613,6 +50642,7 @@ var Search = function (_Component) {
                 this.setState({
                     ipValue: ''
                 });
+                this.props.handleClear();
             }
         }
     }, {

@@ -24,6 +24,7 @@ class Search extends Component {
             this.setState({
                 hostValue: '',
             });
+            this.props.handleClear();
         }
     }
 
@@ -36,6 +37,7 @@ class Search extends Component {
             this.setState({
                 ipValue: '',
             });
+            this.props.handleClear();
         }
     }
 

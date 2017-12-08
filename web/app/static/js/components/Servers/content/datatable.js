@@ -112,8 +112,32 @@ class ServerTable extends Component {
 
     searchTable(data) {
         const tData = [...this.state.datas];
+        const hostItem = tData.filter((item) => item.hostname === data.hostname);
+        const ipItem = tData.filter((item) => item.ip.indexOf(data.ip) != -1);
+
+        if (hostItem === ipItem) {
+            this.setState({
+                tData: hostItem,
+            });
+        } else if (hostItem.length === 0) {
+            this.setState({
+                tData: ipItem,
+            });
+        } else if (ipItem.length === 0) {
+            this.setState({
+                tData: hostItem,
+            });
+        } else {
+            this.setState({
+                tData: hostItem.concat(ipItem),
+            });
+        }
+    }
+
+    handleClear() {
+        const tData = [...this.state.datas];
         this.setState({
-            tData: tData.filter((item) => item.hostname === data.hostname),
+            tData: tData,
         });
     }
 
@@ -253,6 +277,7 @@ class ServerTable extends Component {
                 roleData={this.state.roleData}
                 cascadeData={this.state.cascadeData}
                 searchTable={this.searchTable.bind(this)}
+                handleClear={this.handleClear.bind(this)}
                 handleAddServer={this.handleAddServer.bind(this)} />
               <Table columns={columns} dataSource={this.state.tData} bordered />
             </div>
