@@ -115,15 +115,15 @@ class ServerTable extends Component {
         const hostItem = tData.filter((item) => item.hostname === data.hostname);
         const ipItem = tData.filter((item) => item.ip.indexOf(data.ip) != -1);
 
-        if (hostItem === ipItem) {
-            this.setState({
-                tData: hostItem,
-            });
-        } else if (hostItem.length === 0) {
+        if (hostItem.length === 0) {
             this.setState({
                 tData: ipItem,
             });
         } else if (ipItem.length === 0) {
+            this.setState({
+                tData: hostItem,
+            });
+        } else if (hostItem[0].key === ipItem[0].key) {
             this.setState({
                 tData: hostItem,
             });
