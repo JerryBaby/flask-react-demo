@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Icon, message, Popconfirm, Table, Tooltip } from 'antd';
+import { Button, Icon, message, Table } from 'antd';
 import Search from './search';
+import ServerEditModal from './serveredit';
 import './datatable.css';
-
-
-const ButtonGroup = Button.Group;
 
 
 class ServerTable extends Component {
@@ -151,6 +149,27 @@ class ServerTable extends Component {
         });
     }
 
+    handleEditServer(data) {
+        const tData = [...this.state.tData].map((item) => {
+            if (item.key === data.key) {
+                return data;
+            } else {
+                return item;
+            }
+        });
+        const datas = [...this.state.datas].map((item) => {
+            if (item.key === data.key) {
+                return data;
+            } else {
+                return item;
+            }
+        });
+        this.setState({
+            tData: tData,
+            datas: datas,
+        });
+    }
+
     onDelete(key) {
         //fetch 调用删除接口删除记录
         //根据key更新 tData 重新渲染
@@ -274,22 +293,13 @@ class ServerTable extends Component {
                 dataIndex: 'operation',
                 render: (text, record, index) => {
                     return (
-                    <span>
-                        <ButtonGroup>
-                          <Tooltip title="编辑">
-                            <Button type="primary" size="small" ghost>
-                              <Icon type="edit" />
-                            </Button>
-                          </Tooltip>
-                          <Popconfirm title="确认删除？" onConfirm={() => this.onDelete(record.key)}>
-                            <Tooltip title="删除">
-                              <Button type="danger" size="small" ghost>
-                                <Icon type="delete" />
-                              </Button>
-                            </Tooltip>
-                          </Popconfirm>
-                        </ButtonGroup>
-                    </span>
+                        <ServerEditModal
+                          passItem={() => { return record;}}
+                          roleData={this.state.roleData}
+                          cascadeData={this.state.cascadeData}
+                          handleEditServer={this.handleEditServer.bind(this)}
+                          handleConfirm={() => this.onDelete(record.key)}
+                        />
                     );
                 },
             }

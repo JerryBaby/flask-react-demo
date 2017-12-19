@@ -10,7 +10,7 @@
 * 3: incorrect password.
 * 4: no data.
 * 5: duplicate host name.
-* 6: existing address.
+* 6: duplicate IP address.
 * 7: invalid IP address.
 * 8: database session exception.
 * ...
