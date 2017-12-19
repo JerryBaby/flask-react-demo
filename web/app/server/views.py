@@ -31,7 +31,7 @@ def get_servers():
     }
     """
     res = []
-    servers = Servers.query.all()
+    servers = Servers.query.order_by(Servers.id).all()
     for s in servers:
         id = s.id
         hostname = s.hostname
@@ -360,7 +360,7 @@ def get_roles():
     }
     '''
     res = []
-    roles = serveRole.query.all()
+    roles = serveRole.query.order_by(serveRole.id).all()
     for r in roles:
         id = r.id
         role = r.rolename
@@ -400,7 +400,7 @@ def get_platforms():
     '''
     res = []
     prs = {}
-    platforms = Platform.query.all()
+    platforms = Platform.query.order_by(Platform.id).all()
     for p in platforms:
         platform = p.platname
         region = p.regioname
@@ -445,7 +445,7 @@ def get_platforms():
     # }
     # '''
     # res = []
-    # status = Status.query.all()
+    # status = Status.query.order_by(Status.id).all()
     # for s in status:
         # id = s.id
         # status = s.statusname
