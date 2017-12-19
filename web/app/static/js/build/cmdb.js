@@ -26856,11 +26856,7 @@ var SideBar = function (_Component) {
             return _react2.default.createElement(
                 Sider,
                 { collapsible: true, collapsed: this.state.collapsed, onCollapse: this.onCollapse.bind(this) },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'logo' },
-                    _react2.default.createElement('img', { src: 'static/jerry.jpg', height: '100%', width: '100%' })
-                ),
+                _react2.default.createElement('div', { className: 'logo' }),
                 _react2.default.createElement(_menu2.default, { cKey: this.props.cKey })
             );
         }

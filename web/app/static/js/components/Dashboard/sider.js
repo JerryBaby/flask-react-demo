@@ -22,9 +22,7 @@ class SideBar extends Component {
     render() {
         return (
             <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse.bind(this)}>
-              <div className="logo">
-                <img src="static/jerry.jpg" height="100%" width="100%" />
-              </div>
+              <div className="logo" />
               <SidebarMenu cKey={this.props.cKey} />
             </Sider>
         );
