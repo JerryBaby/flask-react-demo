@@ -70,7 +70,7 @@ class IPType(db.Model):
 class IP(db.Model):
     __tablename__ = 'ip'
     id = db.Column(db.Integer, primary_key=True)
-    address_hash = db.Column(db.Integer, nullable=False, unique=True)
+    address_hash = db.Column(db.BigInteger, nullable=False, unique=True)
     type_id = db.Column(db.Integer, db.ForeignKey('ip_type.id'))
     allocated = db.Column(db.Integer, db.ForeignKey('servers.id'))
 
