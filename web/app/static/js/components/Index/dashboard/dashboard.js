@@ -6,14 +6,14 @@ import { Layout } from 'antd';
 const { Content } = Layout;
 
 
-class BodyContent extends Component {
+class Dashboard extends Component {
     render() {
         return (
             <Content style={{ margin: '10px', padding: '12px', background: '#fff', minHeight: '70vh' }}>
-              {this.props.children}
+              <p>Dashboard</p>
             </Content>
         );
     }
 }
 
-export default BodyContent;
+export default Dashboard;

@@ -46,8 +46,3 @@
 
 * http://localhost/user\_api/\*: 用户相关接口
 * http://localhost/cmdb\_api/\*: 配置相关接口
-
-
-## TODO
-
-react-router 构建 single page application

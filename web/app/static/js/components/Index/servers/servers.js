@@ -1,19 +1,20 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
 import { Layout } from 'antd';
+import ServerTable from './component/datatable';
 
 
 const { Content } = Layout;
 
 
-class BodyContent extends Component {
+class Servers extends Component {
     render() {
         return (
             <Content style={{ margin: '10px', padding: '12px', background: '#fff', minHeight: '70vh' }}>
-              {this.props.children}
+              <ServerTable />
             </Content>
         );
     }
 }
 
-export default BodyContent;
+export default Servers;
