@@ -27,7 +27,7 @@ def unconfirmed():
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('auth/login.html')
+        return render_template('main/index.html')
     if request.method == 'POST':
         data = request.json
         if data is not None and \
@@ -57,7 +57,7 @@ def logout():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('auth/register.html')
+    return render_template('main/index.html')
 
 
 @auth.route('/confirm/<token>')

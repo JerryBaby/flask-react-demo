@@ -137,4 +137,5 @@ class RegistrationForm extends Component {
 
 const WrappedRegistrationForm = Form.create()(RegistrationForm);
 
-ReactDOM.render(<WrappedRegistrationForm />, document.getElementById('react-demo'));
+
+export default WrappedRegistrationForm;

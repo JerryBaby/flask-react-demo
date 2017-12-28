@@ -86,4 +86,5 @@ class LoginForm extends Component {
 
 const WrapperLoginForm = Form.create()(LoginForm);
 
-ReactDOM.render(<WrapperLoginForm />, document.getElementById('react-demo'));
+
+export default WrapperLoginForm;
