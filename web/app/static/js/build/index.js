@@ -42317,17 +42317,30 @@ var SideBar = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (SideBar.__proto__ || Object.getPrototypeOf(SideBar)).call(this, props));
 
+        _this.rootSubmenuKeys = ['dashboard', 'cmdb'];
         _this.state = {
             collapsed: false,
-            selected: 'dashboard'
+            selected: 'servers',
+            openKeys: []
         };
         return _this;
     }
 
     _createClass(SideBar, [{
-        key: 'onCollapse',
-        value: function onCollapse(collapsed) {
-            this.setState({ collapsed: collapsed });
+        key: 'onOpenChange',
+        value: function onOpenChange(openKeys) {
+            var _this2 = this;
+
+            var latestOpenKey = openKeys.find(function (key) {
+                return _this2.state.openKeys.indexOf(key) === -1;
+            });
+            if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+                this.setState({ openKeys: openKeys });
+            } else {
+                this.setState({
+                    openKeys: latestOpenKey ? [latestOpenKey] : []
+                });
+            }
         }
     }, {
         key: 'handleClick',
@@ -42335,6 +42348,11 @@ var SideBar = function (_Component) {
             this.setState({
                 selected: e.key
             });
+        }
+    }, {
+        key: 'onCollapse',
+        value: function onCollapse(collapsed) {
+            this.setState({ collapsed: collapsed });
         }
     }, {
         key: 'render',
@@ -42352,19 +42370,34 @@ var SideBar = function (_Component) {
                         theme: 'dark',
                         mode: 'inline',
                         onClick: this.handleClick.bind(this),
+                        onOpenChange: this.onOpenChange.bind(this),
+                        openKeys: this.state.openKeys,
                         selectedKeys: [this.state.selected] },
                     _react2.default.createElement(
-                        _menu2.default.Item,
-                        { key: 'dashboard' },
-                        _react2.default.createElement(
-                            _reactRouterDom.Link,
-                            { to: '/' },
-                            _react2.default.createElement(_icon2.default, { type: 'pie-chart' }),
-                            _react2.default.createElement(
-                                'span',
+                        SubMenu,
+                        { key: 'dashboard', title: _react2.default.createElement(
+                                'div',
                                 null,
-                                'Dashboard'
+                                _react2.default.createElement(_icon2.default, { type: 'pie-chart' }),
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    'Dashboard'
+                                )
+                            ) },
+                        _react2.default.createElement(
+                            _menu2.default.Item,
+                            { key: 'demo1' },
+                            _react2.default.createElement(
+                                _reactRouterDom.Link,
+                                { to: '/' },
+                                'demo1'
                             )
+                        ),
+                        _react2.default.createElement(
+                            _menu2.default.Item,
+                            { key: 'demo2' },
+                            'demo2'
                         )
                     ),
                     _react2.default.createElement(
@@ -42382,17 +42415,30 @@ var SideBar = function (_Component) {
                         )
                     ),
                     _react2.default.createElement(
-                        _menu2.default.Item,
-                        { key: 'cmdb' },
-                        _react2.default.createElement(
-                            _reactRouterDom.Link,
-                            { to: '/cmdb' },
-                            _react2.default.createElement(_icon2.default, { type: 'file-text' }),
-                            _react2.default.createElement(
-                                'span',
+                        SubMenu,
+                        { key: 'cmdb', title: _react2.default.createElement(
+                                'div',
                                 null,
-                                'CMDB'
+                                _react2.default.createElement(_icon2.default, { type: 'file-text' }),
+                                _react2.default.createElement(
+                                    'span',
+                                    null,
+                                    'CMDB'
+                                )
+                            ) },
+                        _react2.default.createElement(
+                            _menu2.default.Item,
+                            { key: 'demo3' },
+                            _react2.default.createElement(
+                                _reactRouterDom.Link,
+                                { to: '/cmdb' },
+                                'demo3'
                             )
+                        ),
+                        _react2.default.createElement(
+                            _menu2.default.Item,
+                            { key: 'demo4' },
+                            'demo4'
                         )
                     )
                 )
@@ -53221,7 +53267,7 @@ var Search = function (_Component) {
                 { style: { marginBottom: '10px', backgroundColor: '#f5f5f5' } },
                 _react2.default.createElement(
                     _row2.default,
-                    { type: 'flex', align: 'middle' },
+                    { type: 'flex', justify: 'center', align: 'middle' },
                     _react2.default.createElement(
                         _col2.default,
                         { span: 6 },

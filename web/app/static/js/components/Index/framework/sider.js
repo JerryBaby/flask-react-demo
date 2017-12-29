@@ -11,20 +11,33 @@ const SubMenu = Menu.SubMenu;
 class SideBar extends Component {
     constructor(props) {
         super(props);
+        this.rootSubmenuKeys = ['dashboard', 'cmdb'];
         this.state = {
             collapsed: false,
-            selected: 'dashboard',
+            selected: 'servers',
+            openKeys: [],
         }
     }
 
-    onCollapse(collapsed) {
-        this.setState({collapsed});
+    onOpenChange(openKeys) {
+        const latestOpenKey = openKeys.find((key) => this.state.openKeys.indexOf(key) === -1);
+        if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+            this.setState({ openKeys });
+        } else {
+            this.setState({
+                openKeys: latestOpenKey ? [latestOpenKey] : [],
+            });
+        }
     }
 
     handleClick(e) {
         this.setState({
             selected: e.key,
         });
+    }
+
+    onCollapse(collapsed) {
+        this.setState({collapsed});
     }
 
     render() {
@@ -40,16 +53,28 @@ class SideBar extends Component {
                 theme="dark"
                 mode="inline"
                 onClick={this.handleClick.bind(this)}
+                onOpenChange={this.onOpenChange.bind(this)}
+                openKeys={this.state.openKeys}
                 selectedKeys={[this.state.selected]}>
-                <Menu.Item key="dashboard">
-                  <Link to="/"><Icon type="pie-chart" /><span>Dashboard</span></Link>
-                </Menu.Item>
+                <SubMenu key="dashboard" title={<div><Icon type="pie-chart" /><span>Dashboard</span></div>}>
+                  <Menu.Item key="demo1">
+                    <Link to="/">demo1</Link>
+                  </Menu.Item>
+                  <Menu.Item key="demo2">
+                    demo2
+                  </Menu.Item>
+                </SubMenu>
                 <Menu.Item key="servers">
                   <Link to="/servers"><Icon type="desktop" /><span>Servers</span></Link>
                 </Menu.Item>
-                <Menu.Item key="cmdb">
-                  <Link to="/cmdb"><Icon type="file-text" /><span>CMDB</span></Link>
-                </Menu.Item>
+                <SubMenu key="cmdb" title={<div><Icon type="file-text" /><span>CMDB</span></div>}>
+                  <Menu.Item key="demo3">
+                    <Link to="/cmdb">demo3</Link>
+                  </Menu.Item>
+                  <Menu.Item key="demo4">
+                    demo4
+                  </Menu.Item>
+                </SubMenu>
               </Menu>
             </Sider>
         );

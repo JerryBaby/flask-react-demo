@@ -63,7 +63,7 @@ class Search extends Component {
 
         return (
             <div style={{ marginBottom: '10px', backgroundColor: '#f5f5f5' }}>
-              <Row type="flex" align="middle">
+              <Row type="flex" justify="center" align="middle">
                 <Col span={6}>
                   <Select
                     style={{ width: '98%', margin: '10px' }}
