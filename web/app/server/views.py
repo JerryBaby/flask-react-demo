@@ -160,6 +160,7 @@ def server_add():
             region = server.platform.regioname
             attribute = server.attribute.attrname
             status = server.server_status.statusname
+            m_status = server.monitorstatus
             res = {
                 'key': id,
                 'hostname': hostname,
@@ -169,6 +170,7 @@ def server_add():
                 'region': region,
                 'attribute': attribute,
                 'status': status,
+                'm_status': m_status,
             }
             return jsonify({'code': 0, 'result': res})
         except Exception as e:
@@ -323,6 +325,7 @@ def server_modify():
             region = server.platform.regioname
             attribute = server.attribute.attrname
             status = server.server_status.statusname
+            m_status = server.monitorstatus
             res = {
                 'key': id,
                 'hostname': hostname,
@@ -332,6 +335,7 @@ def server_modify():
                 'region': region,
                 'attribute': attribute,
                 'status': status,
+                'm_status': m_status,
             }
             return jsonify({'code': 0, 'result': res})
         except Exception as e:
