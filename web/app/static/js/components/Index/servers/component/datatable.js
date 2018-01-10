@@ -276,6 +276,13 @@ class ServerTable extends Component {
                 className: 'cell',
                 colSpan: 1,
                 dataIndex: 'status',
+                render: (text, record, index) => {
+                    if ( text === '在线') {
+                        return <Badge status="success" text="在线" />;
+                    } else if ( text === '下线') {
+                        return <Badge status="warning" text="下线" />;
+                    }
+                },
                 filters: [{
                     text: '在线',
                     value: '在线',

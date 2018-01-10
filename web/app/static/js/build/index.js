@@ -43051,6 +43051,13 @@ var ServerTable = function (_Component) {
                 className: 'cell',
                 colSpan: 1,
                 dataIndex: 'status',
+                render: function render(text, record, index) {
+                    if (text === '在线') {
+                        return _react2.default.createElement(_badge2.default, { status: 'success', text: '\u5728\u7EBF' });
+                    } else if (text === '下线') {
+                        return _react2.default.createElement(_badge2.default, { status: 'warning', text: '\u4E0B\u7EBF' });
+                    }
+                },
                 filters: [{
                     text: '在线',
                     value: '在线'
