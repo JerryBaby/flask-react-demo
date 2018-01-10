@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import { Button, Icon, message, Table } from 'antd';
+import { Badge, Button, Icon, message, Table } from 'antd';
 import Search from './search';
 import ServerEditModal from './serveredit';
 import './datatable.css';
@@ -285,6 +285,27 @@ class ServerTable extends Component {
                 }],
                 onFilter: (value, record) => { return record.status === value },
                 sorter: (a, b) => { return a.status.localeCompare(b.status) },
+            },
+            {
+                title: '监控状态',
+                className: 'cell',
+                colSpan: 1,
+                dataIndex: 'm_status',
+                render: (text, record, index) => {
+                    if (text) {
+                        return <Badge status="processing" text="监控中" />;
+                    } else {
+                        return <Badge status="error" text="未监控" />;
+                    }
+                },
+                filters: [{
+                    text: '监控中',
+                    value: true,
+                }, {
+                    text: '未监控',
+                    value: false,
+                }],
+                onFilter: (value, record) => { return record.m_status.toString() === value.toString() },
             },
             {
                 title: '操作',

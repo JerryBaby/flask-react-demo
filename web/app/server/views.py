@@ -25,7 +25,8 @@ def get_servers():
                 "platform": "阿里云",
                 "region": "华北2",
                 "role": "edge",
-                "status": "在线"
+                "status": "在线",
+                "m_status": "False",
             }
         ]
     }
@@ -41,6 +42,7 @@ def get_servers():
         region = s.platform.regioname
         attribute = s.attribute.attrname
         status = s.server_status.statusname
+        m_status = s.monitorstatus
         res.append({
             'key': id,
             'hostname': hostname,
@@ -50,6 +52,7 @@ def get_servers():
             'region': region,
             'attribute': attribute,
             'status': status,
+            'm_status': m_status,
         })
     return jsonify({'code': 0, 'result': res})
 

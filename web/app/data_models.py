@@ -51,6 +51,7 @@ class Servers(db.Model):
     plat_id = db.Column(db.Integer, db.ForeignKey('platforms.id'))
     attr_id = db.Column(db.Integer, db.ForeignKey('attributes.id'))
     servicestatus = db.Column(db.Integer, db.ForeignKey('server_status.id'))
+    monitorstatus = db.Column(db.Boolean, default=False)
     ip = db.relationship('IP', backref='server')
 
     def __repr__(self):
