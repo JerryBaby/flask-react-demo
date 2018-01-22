@@ -23,14 +23,14 @@ def update_monitor_status():
         # 获取认证 token
         def _get_auth_token():
             data = {
-                        'jsonrpc': '2.0',
-                        'method': 'user.login',
-                        'params': {
-                            'user': 'Admin',
-                            'password': 'Admin'
-                        },
-                        'id': 0,
-                }
+                'jsonrpc': '2.0',
+                'method': 'user.login',
+                'params': {
+                    'user': 'Admin',
+                    'password': 'Admin'
+                },
+                'id': 0,
+            }
             try:
                 r = requests.post(zabbix_api, headers=headers, json=data, timeout=5)
                 r.raise_for_status()
@@ -45,14 +45,14 @@ def update_monitor_status():
             try:
                 token = _get_auth_token()
                 data = {
-                            'jsonrpc': '2.0',
-                            'method': 'host.get',
-                            'params': {
-                                'output': ['host'],
-                            },
-                            'id': 1,
-                            'auth': token
-                    }
+                    'jsonrpc': '2.0',
+                    'method': 'host.get',
+                    'params': {
+                        'output': ['host'],
+                    },
+                    'id': 1,
+                    'auth': token
+                }
                 r = requests.post(zabbix_api, headers=headers, json=data, timeout=5)
                 r.raise_for_status()
                 res = r.json().get('result')
