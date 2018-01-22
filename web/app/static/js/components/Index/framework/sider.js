@@ -57,11 +57,11 @@ class SideBar extends Component {
                 openKeys={this.state.openKeys}
                 selectedKeys={[this.state.selected]}>
                 <SubMenu key="dashboard" title={<div><Icon type="pie-chart" /><span>Dashboard</span></div>}>
-                  <Menu.Item key="demo1">
-                    <Link to="/">demo1</Link>
+                  <Menu.Item key="navigation">
+                    <Link to="/dashboard/navigation">navigation</Link>
                   </Menu.Item>
-                  <Menu.Item key="demo2">
-                    demo2
+                  <Menu.Item key="alerts">
+                    <Link to="/dashboard/alerts">alerts</Link>
                   </Menu.Item>
                 </SubMenu>
                 <Menu.Item key="servers">

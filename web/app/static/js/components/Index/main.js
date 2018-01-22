@@ -5,12 +5,13 @@ import { Layout } from 'antd';
 import HeaderContent from './framework/header';
 import FooterContent from './framework/footer';
 import SideBar from './framework/sider';
-import Dashboard from './dashboard/dashboard';
+import Navigation from './dashboard/navigation/navigation';
+import Alerts from './dashboard/alerts/alerts';
 import Servers from './servers/servers';
 import CMDB from './cmdb/cmdb';
 
 
-class Navigation extends Component {
+class Main extends Component {
     render() {
         return (
             <Layout className="layout">
@@ -19,7 +20,8 @@ class Navigation extends Component {
                 <HeaderContent />
 
                 <Switch>
-                  <Route exact path="/" component={Dashboard} />
+                  <Route path="/dashboard/navigation" component={Navigation} />
+                  <Route path="/dashboard/alerts" component={Alerts} />
                   <Route path="/servers" component={Servers} />
                   <Route path="/cmdb" component={CMDB} />
                 </Switch>
@@ -32,4 +34,4 @@ class Navigation extends Component {
 }
 
 
-export default Navigation;
+export default Main;

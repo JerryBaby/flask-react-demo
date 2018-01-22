@@ -6,14 +6,14 @@ import { Layout } from 'antd';
 const { Content } = Layout;
 
 
-class Dashboard extends Component {
+class Alerts extends Component {
     render() {
         return (
             <Content style={{ margin: '10px', padding: '12px', background: '#fff', minHeight: '70vh' }}>
-              <p>Dashboard</p>
+              <p>Alerts</p>
             </Content>
         );
     }
 }
 
-export default Dashboard;
+export default Alerts;
