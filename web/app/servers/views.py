@@ -431,33 +431,3 @@ def get_platforms():
 #platform add
 #platform del
 #platform modify
-
-
-# 服务器状态和服务器属性接口暂时不对外开放
-# @server.route('/get_status')
-# def get_status():
-    # '''
-    # ->
-    # {
-        # "result": [
-            # {
-                # "key": 1,
-                # "status": "在线"
-            # },
-            # {
-                # "key": 2,
-                # "status": "下线"
-            # }
-        # ]
-    # }
-    # '''
-    # res = []
-    # status = Status.query.order_by(Status.id).all()
-    # for s in status:
-        # id = s.id
-        # status = s.statusname
-        # res.append({
-            # 'key': id,
-            # 'status': status,
-        # })
-    # return jsonify({'code': 0, 'result': res})

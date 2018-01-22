@@ -39,8 +39,9 @@
     * http://localhost/server\_api/platform\_add: 添加云平台
     * http://localhost/server\_api/platform\_del: 删除云平台
     * http://localhost/server\_api/platform\_modify: 修改云平台
-    *
-    * http://localhost/server\_api/get\_status: 获取服务器状态信息
+
+* http://localhost/dashboard\_api/\*: dashboard 相关接口
+    * http://localhost/
 
 * http://localhost/user\_api/\*: 用户相关接口
 * http://localhost/cmdb\_api/\*: 配置相关接口
