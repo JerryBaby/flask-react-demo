@@ -11,6 +11,7 @@
 * 6: duplicate IP address.
 * 7: invalid IP address.
 * 8: database session exception.
+* 9: get alerts exception.
 * ...
 
 ## URL:
@@ -41,7 +42,7 @@
     * http://localhost/server\_api/platform\_modify: 修改云平台
 
 * http://localhost/dashboard\_api/\*: dashboard 相关接口
-    * http://localhost/
+    * http://localhost/dashboard\_api/get\_alerts: 获取告警信息
 
 * http://localhost/user\_api/\*: 用户相关接口
 * http://localhost/cmdb\_api/\*: 配置相关接口

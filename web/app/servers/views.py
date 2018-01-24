@@ -78,7 +78,6 @@ def server_add():
                     _ip = IP.query.filter_by(address_hash=socket.ntohl(
                         struct.unpack("I",socket.inet_aton(ip))[0])).first()
                 except Exception as e:
-                    print e
                     return {'code': 7, 'result': 'invalid IP address %s.' % ip}
                 if _ip is not None:
                     if _ip.allocated is not None:
@@ -174,7 +173,6 @@ def server_add():
             }
             return jsonify({'code': 0, 'result': res})
         except Exception as e:
-            print e
             return jsonify({'code': 8, 'result': 'database session exception.'})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
@@ -195,7 +193,6 @@ def server_del():
                 db.session.commit()
                 return jsonify({'code': 0, 'result': 'delete server ok.'})
             except Exception as e:
-                print e
                 return jsonify({'code': 8, 'result': 'database session exception.'})
         else:
             return jsonify({'code': 4, 'result': 'no data.'})
@@ -226,7 +223,6 @@ def server_modify():
                     _ip = IP.query.filter_by(address_hash=socket.ntohl(
                         struct.unpack("I",socket.inet_aton(ip))[0])).first()
                 except Exception as e:
-                    print e
                     return {'code': 7, 'result': 'invalid IP address %s.' % ip}
                 if _ip is not None:
                     if _ip.allocated is not None and _ip.allocated != data['key']:
@@ -339,7 +335,6 @@ def server_modify():
             }
             return jsonify({'code': 0, 'result': res})
         except Exception as e:
-            print e
             return jsonify({'code': 8, 'result': 'database session exception.'})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
