@@ -19,7 +19,7 @@ class ServerTable extends Component {
         };
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.fetchTableData();
         // 获取角色 云平台 区域
         this.fetchServerRole();

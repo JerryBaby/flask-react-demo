@@ -5,58 +5,71 @@ from flask import jsonify
 from . import dashboard
 
 
-@dashboard.route('/get_alerts')
-def get_alerts():
-    zabbix_api = 'http://localhost:20051/zabbix/api_jsonrpc.php'
-    headers = {'Content-Type': 'application/json'}
+class ZabbixApi(object):
+    def __init__(self, api, user, password):
+        self.api = api
+        self.user = user
+        self.password = password
+        self.token = ''
+        self.headers = {'Content-Type': 'application/json'}
 
-    def _get_auth_token():
+    # 登录
+    def login(self):
         data = {
             'jsonrpc': '2.0',
             'method': 'user.login',
             'params': {
-                'user': 'Admin',
-                'password': 'Lvc_zabbixAdmin!'
+                'user': self.user,
+                'password': self.password,
             },
             'id': 0,
         }
         try:
-            r = requests.post(zabbix_api, headers=headers, json=data, timeout=5)
+            r = requests.post(
+                    self.api,
+                    headers=self.headers,
+                    json=data,
+                    timeout=5,
+                    )
             r.raise_for_status()
-            token = r.json().get('result')
+            self.token = r.json().get('result')
         except Exception as e:
             raise e
 
-        return token
-
-    def _get_trigger_data(token):
-        try:
-            data = {
-                'jsonrpc': '2.0',
-                'method': 'trigger.get',
-                'params': {
-                    "output": [
-                        "description",
-                        "lastchange",
-                        "priority",
-                    ],
-                    "filter": {
-                        "value": 1
-                    },
-                    'selectLastEvent': ['lastEvent'],
-                    "expandDescription": 1,
-                    "min_severity": 0,
-                    "monitored": 1,
-                    "only_true": 1,
-                    "selectHosts": ['host'],
-                    "skipDependent": 1,
-                    "sortfield": "lastchange",
-                    "sortorder": "DESC",
+    # 获取 trigger 数据
+    def get_trigger_data(self):
+        data = {
+            'jsonrpc': '2.0',
+            'method': 'trigger.get',
+            'params': {
+                "output": [
+                    "description",
+                    "lastchange",
+                    "priority",
+                ],
+                "filter": {
+                    "value": 1
                 },
-                'id': 1,
-                'auth': token,
-            }
-            r = requests.post(zabbix_api, headers=headers, json=data, timeout=5)
+                'selectLastEvent': ['lastEvent'],
+                "expandDescription": 1,
+                "min_severity": 0,
+                "monitored": 1,
+                "only_true": 1,
+                "selectHosts": ['host'],
+                "skipDependent": 1,
+                "sortfield": "lastchange",
+                "sortorder": "DESC",
+            },
+            'id': 1,
+            'auth': self.token,
+        }
+        try:
+            r = requests.post(
+                    self.api,
+                    headers=self.headers,
+                    json=data,
+                    timeout=5
+                    )
             r.raise_for_status()
             res = r.json().get('result')
         except Exception as e:
@@ -64,30 +77,36 @@ def get_alerts():
 
         return res
 
-    def _get_event_data(token, trigger_data):
-        try:
-            data = {
-                'jsonrpc': '2.0',
-                'method': 'event.get',
-                'params': {
-                    'output': [
-                        'acknowledged',
-                    ],
-                    'select_acknowledges': [
-                        'alias',
-                        'message',
-                        'surname',
-                        'name',
-                        'clock',
-                    ],
-                    "filter": {
-                        "eventid": trigger_data['lastEvent']['eventid'],
-                    },
+    # 获取 event 数据
+    def get_event_data(self, trigger_data):
+        data = {
+            'jsonrpc': '2.0',
+            'method': 'event.get',
+            'params': {
+                'output': [
+                    'acknowledged',
+                ],
+                'select_acknowledges': [
+                    'alias',
+                    'message',
+                    'surname',
+                    'name',
+                    'clock',
+                ],
+                "filter": {
+                    "eventid": trigger_data['lastEvent']['eventid'],
                 },
-                'id': 2,
-                'auth': token,
-            }
-            r = requests.post(zabbix_api, headers=headers, json=data, timeout=5)
+            },
+            'id': 2,
+            'auth': self.token,
+        }
+        try:
+            r = requests.post(
+                    self.api,
+                    headers=self.headers,
+                    json=data,
+                    timeout=5
+                    )
             r.raise_for_status()
             trigger_data['lastEvent'] = r.json().get('result')[0]
         except Exception as e:
@@ -95,14 +114,36 @@ def get_alerts():
 
         return trigger_data
 
+
+@dashboard.route('/get_alerts')
+def get_alerts():
+    tencent_api = 'http://localhost:20051/zabbix/api_jsonrpc.php'
+    ali_api = 'http://localhost:20051/zabbix/api_jsonrpc.php'
+    alerts = []
+
     try:
-        alerts = []
-        token = _get_auth_token()
-        trigger_data = _get_trigger_data(token)
-        for x in trigger_data:
+        # 获取腾讯平台数据
+        za_t = ZabbixApi(tencent_api, 'Admin', 'Admin')
+        za_t.login()
+        trigger_data_t = za_t.get_trigger_data()
+        for x in trigger_data_t:
             x['lastchange'] = time.strftime('%Y-%m-%d %H:%M:%S',
                 time.localtime(float(x['lastchange'])))
-            res =  _get_event_data(token, x)
+            res = za_t.get_event_data(x)
+            if res['lastEvent']['acknowledged'] == '1':
+                res['lastEvent']['acknowledges'][0]['clock'] = \
+                    time.strftime('%Y-%m-%d %H:%M:%S',
+                        time.localtime(float(res['lastEvent']['acknowledges'][0]['clock'])))
+            alerts.append(res)
+
+        # 获取阿里平台数据
+        za_a = ZabbixApi(ali_api, 'Admin', 'Admin')
+        za_a.login()
+        trigger_data_a = za_a.get_trigger_data()
+        for x in trigger_data_a:
+            x['lastchange'] = time.strftime('%Y-%m-%d %H:%M:%S',
+                time.localtime(float(x['lastchange'])))
+            res = za_t.get_event_data(x)
             if res['lastEvent']['acknowledged'] == '1':
                 res['lastEvent']['acknowledges'][0]['clock'] = \
                     time.strftime('%Y-%m-%d %H:%M:%S',

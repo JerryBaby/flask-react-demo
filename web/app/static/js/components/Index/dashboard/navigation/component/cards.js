@@ -10,24 +10,33 @@ class NavigationCards extends Component {
     }
 
     render() {
-        const zabbix = '#';
-        const grafana = '#';
-        const jenkins = '#';
-        const gslb = '#';
-        const biTencent = '#';
-        const biAli = '#';
-        const duobei = '#';
-        const tencent = '#';
-        const ali = '#';
+        const zabbix_tencent = '';
+        const zabbix_ali = '';
+        const grafana = '';
+        const jenkins = '';
+        const gslb = '';
+        const biTencent = '';
+        const biAli = '';
+        const duobei = '';
+        const tencent = '';
+        const ali = '';
 
         return (
             <div>
               <Row gutter={16} style={{ marginBottom: 16 }}>
                 <Col span={6}>
-                  <Card style={{ height: 120 }} bodyStyle={{ backgroundColor: '#f04134', height: 120 }} onClick={this.handleClick.bind(this, zabbix)}>
+                  <Card style={{ height: 120 }} bodyStyle={{ backgroundColor: '#f04134', height: 120 }} onClick={this.handleClick.bind(this, zabbix_tencent)}>
                     <div>
-                      <h1>ZABBIX</h1>
-                      <p>监控系统</p>
+                      <h1>ZABBIX Tencent</h1>
+                      <p>腾讯监控系统</p>
+                    </div>
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card style={{ height: 120 }} bodyStyle={{ backgroundColor: '#f04134', height: 120 }} onClick={this.handleClick.bind(this, zabbix_ali)}>
+                    <div>
+                      <h1>ZABBIX Ali</h1>
+                      <p>阿里监控系统</p>
                     </div>
                   </Card>
                 </Col>
@@ -44,14 +53,6 @@ class NavigationCards extends Component {
                     <div>
                       <h1>Jenkins</h1>
                       <p>自动化平台</p>
-                    </div>
-                  </Card>
-                </Col>
-                <Col span={6}>
-                  <Card style={{ height: 120 }} bodyStyle={{ backgroundColor: '#f5317f', height: 120 }} onClick={this.handleClick.bind(this, gslb)}>
-                    <div>
-                      <h1>GSLB</h1>
-                      <p>调度系统</p>
                     </div>
                   </Card>
                 </Col>
@@ -78,6 +79,14 @@ class NavigationCards extends Component {
                     <div>
                       <h1>DuoBei</h1>
                       <p>多贝云</p>
+                    </div>
+                  </Card>
+                </Col>
+                <Col span={6}>
+                  <Card style={{ height: 120 }} bodyStyle={{ backgroundColor: '#f5317f', height: 120 }} onClick={this.handleClick.bind(this, gslb)}>
+                    <div>
+                      <h1>GSLB</h1>
+                      <p>调度系统</p>
                     </div>
                   </Card>
                 </Col>

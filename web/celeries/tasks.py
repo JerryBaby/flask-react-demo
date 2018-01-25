@@ -3,6 +3,7 @@
 
 
 from __future__ import absolute_import, unicode_literals
+import re
 import requests
 from celery.utils.log import get_task_logger
 from .celery import celery
@@ -14,63 +15,95 @@ from manage import app
 logger = get_task_logger(__name__)
 
 
-@celery.task
-def update_monitor_status():
-    with app.app_context():
-        zabbix_api = 'http://localhost/zabbix/api_jsonrpc.php'
-        headers = {'Content-Type': 'application/json'}
+class ZabbixApi(object):
+    def __init__(self, api, user, password):
+        self.api = api
+        self.user = user
+        self.password = password
+        self.token = ''
+        self.headers = {'Content-Type': 'application/json'}
 
-        # 获取认证 token
-        def _get_auth_token():
-            data = {
-                'jsonrpc': '2.0',
-                'method': 'user.login',
-                'params': {
-                    'user': 'Admin',
-                    'password': 'Admin'
-                },
-                'id': 0,
-            }
-            try:
-                r = requests.post(zabbix_api, headers=headers, json=data, timeout=5)
-                r.raise_for_status()
-                token = r.json().get('result')
-            except Exception as e:
-                raise e
+    # 登录
+    def login(self):
+        data = {
+            'jsonrpc': '2.0',
+            'method': 'user.login',
+            'params': {
+                'user': self.user,
+                'password': self.password,
+            },
+            'id': 0,
+        }
+        try:
+            r = requests.post(
+                    self.api,
+                    headers=self.headers,
+                    json=data,
+                    timeout=5,
+                    )
+            r.raise_for_status()
+            self.token = r.json().get('result')
+        except Exception as e:
+            raise e
 
-            return token
+    # 获取监控数据
+    # 传入主机名后缀, 区分平台
+    def get_monitor_data(self, suffix):
+        data = {
+            'jsonrpc': '2.0',
+            'method': 'host.get',
+            'params': {
+                'output': ['host'],
+            },
+            'id': 1,
+            'auth': self.token,
+        }
+        try:
+            r = requests.post(
+                    self.api,
+                    headers=self.headers,
+                    json=data,
+                    timeout=5
+                    )
+            r.raise_for_status()
+            res = r.json().get('result')
+        except Exception as e:
+            raise e
 
-        # 获取监控数据
-        def _get_monitor_data():
-            try:
-                token = _get_auth_token()
-                data = {
-                    'jsonrpc': '2.0',
-                    'method': 'host.get',
-                    'params': {
-                        'output': ['host'],
-                    },
-                    'id': 1,
-                    'auth': token
-                }
-                r = requests.post(zabbix_api, headers=headers, json=data, timeout=5)
-                r.raise_for_status()
-                res = r.json().get('result')
-            except Exception as e:
-                raise e
+        # suffix 传入一个list对象, 以支持多个后缀过滤
+        suffix = '|'.join(suffix)
+        pattern = re.compile(r'^.*(%s)$' % suffix)
 
-            hosts = []
-            for i in res:
+        hosts = []
+        for i in res:
+            if pattern.match(i['host']):
                 hosts.append(i['host'])
 
-            return hosts
+        return hosts
+
+
+@celery.task
+def update_monitor_status():
+    tencent_api = 'http://localhost:20051/zabbix/api_jsonrpc.php'
+    ali_api = 'http://localhost:20051/zabbix/api_jsonrpc.php'
+
+    with app.app_context():
 
         # 更新资产监控信息
         try:
-            hosts = _get_monitor_data()
+            za_t = ZabbixApi(tencent_api, 'Admin', 'Admin')
+            za_t.login()
+            hosts_t = za_t.get_monitor_data(['ten.dm'])
+
+            za_a = ZabbixApi(ali_api, 'Admin', 'Admin')
+            za_a.login()
+            hosts_a = za_a.get_monitor_data(['ali.dm', 'ali.qr'])
+
+            hosts_t.extend(hosts_a)
+
             servers = Servers.query.all()
             for server in servers:
-                if server.hostname in hosts:
+                if server.hostname in hosts_t:
                     server.monitorstatus = True
                     db.session.add(server)
             db.session.commit()

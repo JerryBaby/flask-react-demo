@@ -56,18 +56,18 @@ class SideBar extends Component {
                 onOpenChange={this.onOpenChange.bind(this)}
                 openKeys={this.state.openKeys}
                 selectedKeys={[this.state.selected]}>
-                <SubMenu key="dashboard" title={<div><Icon type="pie-chart" /><span>Dashboard</span></div>}>
+                <SubMenu key="dashboard" title={<div><Icon type="pie-chart" /><span>仪表盘</span></div>}>
                   <Menu.Item key="navigation">
-                    <Link to="/dashboard/navigation">navigation</Link>
+                    <Link to="/dashboard/navigation">导航页面</Link>
                   </Menu.Item>
                   <Menu.Item key="alerts">
-                    <Link to="/dashboard/alerts">alerts</Link>
+                    <Link to="/dashboard/alerts">告警信息</Link>
                   </Menu.Item>
                 </SubMenu>
                 <Menu.Item key="servers">
-                  <Link to="/servers"><Icon type="desktop" /><span>Servers</span></Link>
+                  <Link to="/servers"><Icon type="desktop" /><span>服务器</span></Link>
                 </Menu.Item>
-                <SubMenu key="cmdb" title={<div><Icon type="file-text" /><span>CMDB</span></div>}>
+                <SubMenu key="cmdb" title={<div><Icon type="file-text" /><span>配置管理</span></div>}>
                   <Menu.Item key="demo3">
                     <Link to="/cmdb">demo3</Link>
                   </Menu.Item>
