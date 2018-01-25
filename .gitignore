@@ -1,4 +1,7 @@
 *.pyc
 *.sqlite
+*.url
+*.nourl
+*.bak
 venv/
 node_modules/
