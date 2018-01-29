@@ -108,7 +108,14 @@ class ZabbixApi(object):
                     timeout=5
                     )
             r.raise_for_status()
-            trigger_data['lastEvent'] = r.json().get('result')[0]
+            if r.json().get('result'):
+                trigger_data['lastEvent'] = r.json().get('result')[0]
+            else:
+                trigger_data['lastEvent'] = {
+                    'eventid': trigger_data['lastEvent']['eventid'],
+                    'acknowledges': [],
+                    'acknowledged': '0',
+                }
         except Exception as e:
             raise
 
@@ -123,7 +130,7 @@ def get_alerts():
 
     try:
         # 获取腾讯平台数据
-        za_t = ZabbixApi(tencent_api, 'Admin', 'Admin')
+        za_t = ZabbixApi(tencent_api, 'Admin', 'Lvc_zabbixAdmin!')
         za_t.login()
         trigger_data_t = za_t.get_trigger_data()
         for x in trigger_data_t:
@@ -137,7 +144,7 @@ def get_alerts():
             alerts.append(res)
 
         # 获取阿里平台数据
-        za_a = ZabbixApi(ali_api, 'Admin', 'Admin')
+        za_a = ZabbixApi(ali_api, 'Admin', 'Lvc_zabbixAdmin!')
         za_a.login()
         trigger_data_a = za_a.get_trigger_data()
         for x in trigger_data_a:
