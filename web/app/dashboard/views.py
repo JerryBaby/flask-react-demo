@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import re
 import requests
 import time
 from flask import jsonify
@@ -133,29 +134,39 @@ def get_alerts():
         za_t = ZabbixApi(tencent_api, 'Admin', 'Lvc_zabbixAdmin!')
         za_t.login()
         trigger_data_t = za_t.get_trigger_data()
-        for x in trigger_data_t:
-            x['lastchange'] = time.strftime('%Y-%m-%d %H:%M:%S',
-                time.localtime(float(x['lastchange'])))
-            res = za_t.get_event_data(x)
-            if res['lastEvent']['acknowledged'] == '1':
-                res['lastEvent']['acknowledges'][0]['clock'] = \
-                    time.strftime('%Y-%m-%d %H:%M:%S',
-                        time.localtime(float(res['lastEvent']['acknowledges'][0]['clock'])))
-            alerts.append(res)
 
         # 获取阿里平台数据
         za_a = ZabbixApi(ali_api, 'Admin', 'Lvc_zabbixAdmin!')
         za_a.login()
         trigger_data_a = za_a.get_trigger_data()
-        for x in trigger_data_a:
+
+
+        # 合并两个平台的数据
+        trigger_data_t.extend(trigger_data_a)
+
+        # 按时间戳排序
+        trigger_data_t.sort(key=lambda trigger: trigger['lastchange'],
+                            reverse=True)
+
+        for x in trigger_data_t:
             x['lastchange'] = time.strftime('%Y-%m-%d %H:%M:%S',
                 time.localtime(float(x['lastchange'])))
-            res = za_t.get_event_data(x)
-            if res['lastEvent']['acknowledged'] == '1':
-                res['lastEvent']['acknowledges'][0]['clock'] = \
-                    time.strftime('%Y-%m-%d %H:%M:%S',
-                        time.localtime(float(res['lastEvent']['acknowledges'][0]['clock'])))
-            alerts.append(res)
+            if re.match(r'^.*(ten\.dm)$', x['hosts'][0]['host']):
+                res = za_t.get_event_data(x)
+                if res['lastEvent']['acknowledged'] == '1':
+                    res['lastEvent']['acknowledges'][0]['clock'] = \
+                        time.strftime('%Y-%m-%d %H:%M:%S',
+                            time.localtime(float(res['lastEvent']['acknowledges'][0]['clock'])))
+                alerts.append(res)
+            elif re.match(r'^.*(ali\.dm|ali\.qr)$', x['hosts'][0]['host']):
+                res = za_t.get_event_data(x)
+                if res['lastEvent']['acknowledged'] == '1':
+                    res['lastEvent']['acknowledges'][0]['clock'] = \
+                        time.strftime('%Y-%m-%d %H:%M:%S',
+                            time.localtime(float(res['lastEvent']['acknowledges'][0]['clock'])))
+                alerts.append(res)
+            else:
+                alerts.append(res)
     except Exception as e:
         return jsonify({'code': 9, 'result': 'get alerts exception.'})
 
