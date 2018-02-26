@@ -131,12 +131,12 @@ def get_alerts():
 
     try:
         # 获取腾讯平台数据
-        za_t = ZabbixApi(tencent_api, 'Admin', 'Lvc_zabbixAdmin!')
+        za_t = ZabbixApi(tencent_api, 'Admin', 'Admin')
         za_t.login()
         trigger_data_t = za_t.get_trigger_data()
 
         # 获取阿里平台数据
-        za_a = ZabbixApi(ali_api, 'Admin', 'Lvc_zabbixAdmin!')
+        za_a = ZabbixApi(ali_api, 'Admin', 'Admin')
         za_a.login()
         trigger_data_a = za_a.get_trigger_data()
 

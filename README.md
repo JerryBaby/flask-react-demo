@@ -1,6 +1,10 @@
-全部接口只接受 json 请求，返回 JSON 数据
+## DEMO
 
-## code:
+![1](./1.gif)
+
+![2](./2.gif)
+
+## 接口状态码:
 
 * 0: 请求成功
 * 1: invalid parameters.
@@ -14,7 +18,7 @@
 * 9: get alerts exception.
 * ...
 
-## URL:
+## URL 规划
 
 #### 用户页面
 
