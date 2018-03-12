@@ -151,7 +151,7 @@ def get_alerts():
         for x in trigger_data_t:
             x['lastchange'] = time.strftime('%Y-%m-%d %H:%M:%S',
                 time.localtime(float(x['lastchange'])))
-            if re.match(r'^.*(ten\.dm)$', x['hosts'][0]['host']):
+            if re.match(r'^.*(ten\.dm|agora\.dm)$', x['hosts'][0]['host']):
                 res = za_t.get_event_data(x)
                 if res['lastEvent']['acknowledged'] == '1':
                     res['lastEvent']['acknowledges'][0]['clock'] = \
