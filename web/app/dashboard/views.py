@@ -159,7 +159,7 @@ def get_alerts():
                             time.localtime(float(res['lastEvent']['acknowledges'][0]['clock'])))
                 alerts.append(res)
             elif re.match(r'^.*(ali\.dm|ali\.qr)$', x['hosts'][0]['host']):
-                res = za_t.get_event_data(x)
+                res = za_a.get_event_data(x)
                 if res['lastEvent']['acknowledged'] == '1':
                     res['lastEvent']['acknowledges'][0]['clock'] = \
                         time.strftime('%Y-%m-%d %H:%M:%S',
