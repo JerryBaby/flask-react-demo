@@ -8,7 +8,8 @@ import SideBar from './framework/sider';
 import Navigation from './dashboard/navigation/navigation';
 import Alerts from './dashboard/alerts/alerts';
 import Servers from './servers/servers';
-import CMDB from './cmdb/cmdb';
+import CMDB from './cmdb/clock/cmdb';
+import SwitchLine from './cmdb/switchline/switchline'
 
 
 class Main extends Component {
@@ -23,7 +24,8 @@ class Main extends Component {
                   <Route path="/dashboard/navigation" component={Navigation} />
                   <Route path="/dashboard/alerts" component={Alerts} />
                   <Route path="/servers" component={Servers} />
-                  <Route path="/cmdb" component={CMDB} />
+                  <Route path="/cmdb/switchline" component={SwitchLine} />
+                  <Route path="/cmdb/demo" component={CMDB} />
                 </Switch>
 
                 <FooterContent />

@@ -28,11 +28,13 @@ def create_app(environment):
     from .auth import auth as auth_blueprint
     from .servers import server as server_blueprint
     from .dashboard import dashboard as dashboard_blueprint
+    from .cmdb import cmdb as cmdb_blueprint
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
     app.register_blueprint(server_blueprint, url_prefix='/server_api')
     app.register_blueprint(dashboard_blueprint, url_prefix='/dashboard_api')
+    app.register_blueprint(cmdb_blueprint, url_prefix='/cmdb_api')
 
 
     return app

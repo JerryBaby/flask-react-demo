@@ -49,4 +49,8 @@
     * http://localhost/dashboard\_api/get\_alerts: 获取告警信息
 
 * http://localhost/user\_api/\*: 用户相关接口
+
 * http://localhost/cmdb\_api/\*: 配置相关接口
+    * http://localhost/cmdb\_api/switch\_vk1: 切课 VK1
+    * http://localhost/cmdb\_api/switch\_vk2: 切课 VK2
+    * http://localhost/cmdb\_api/switch\_db2: 切课 DB2

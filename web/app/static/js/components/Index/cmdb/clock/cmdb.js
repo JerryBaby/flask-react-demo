@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
 import { Layout } from 'antd';
-import Clock from './clock';
+import Clock from './component/clock';
 
 
 const { Content } = Layout;

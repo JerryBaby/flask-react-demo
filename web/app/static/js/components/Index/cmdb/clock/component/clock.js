@@ -24,7 +24,6 @@ class Clock extends Component {
         return (
             <div>
               <h1>
-                <p>现在的时间是</p>
                 {this.state.date.toLocaleTimeString()}
               </h1>
             </div>

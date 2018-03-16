@@ -68,11 +68,11 @@ class SideBar extends Component {
                   <Link to="/servers"><Icon type="desktop" /><span>服务器</span></Link>
                 </Menu.Item>
                 <SubMenu key="cmdb" title={<div><Icon type="file-text" /><span>配置管理</span></div>}>
-                  <Menu.Item key="demo3">
-                    <Link to="/cmdb">demo3</Link>
+                  <Menu.Item key="switch">
+                    <Link to="/cmdb/switchline">切课页面</Link>
                   </Menu.Item>
-                  <Menu.Item key="demo4">
-                    demo4
+                  <Menu.Item key="demo">
+                    <Link to="/cmdb/demo">demo</Link>
                   </Menu.Item>
                 </SubMenu>
               </Menu>
