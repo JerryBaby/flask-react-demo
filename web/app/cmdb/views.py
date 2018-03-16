@@ -30,12 +30,15 @@ class SwitchLineThread(threading.Thread):
                     if r.json().get('success'):
                         self.succ.append(self.classid)
                     else:
-                        fail.append(self.classid)
+                        self.fail.append(self.classid)
+                        print 'Failed: %s' % self.classid
                 except Exception as e:
                     print e
-                    fail.append(self.classid)
+                    self.fail.append(self.classid)
+                    print 'Failed: %s' % self.classid
             else:
                 self.fail.append(self.classid)
+                print 'Failed: %s' % self.classid
             self.semaphore.release()
 
         if len(self.apis) == 2:
@@ -52,12 +55,12 @@ class SwitchLineThread(threading.Thread):
                         if r2.json().get('success'):
                             self.succ.append(self.classid)
                         else:
-                            fail.append(self.classid)
+                            self.fail.append(self.classid)
                     else:
-                        fail.append(self.classid)
+                        self.fail.append(self.classid)
                 except Exception as e:
                     print e
-                    fail.append(self.classid)
+                    self.fail.append(self.classid)
             else:
                 self.fail.append(self.classid)
             self.semaphore.release()
