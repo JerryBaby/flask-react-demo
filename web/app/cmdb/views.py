@@ -70,13 +70,20 @@ class SwitchLineThread(threading.Thread):
 def switch_vk1():
     succ = []
     fail = []
+    threads = []
     data = request.json
     if data is not None and data.get('classid'):
         semaphore = threading.Semaphore(10)
         for id in data['classid'].split('\n'):
             t = SwitchLineThread(semaphore, [API_VK1], id, succ, fail)
+            threads.append(t)
+
+        for thread in threads:
             t.start()
+
+        for thread in threads:
             t.join()
+
         return jsonify({'code': 0, 'result': {'success': succ, 'failed': fail}})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
@@ -86,13 +93,20 @@ def switch_vk1():
 def switch_vk2():
     succ = []
     fail = []
+    threads = []
     data = request.json
     if data is not None and data.get('classid'):
         semaphore = threading.Semaphore(10)
         for id in data['classid'].split('\n'):
             t = SwitchLineThread(semaphore, [API_VK1, API_VK2], id, succ, fail)
+            threads.append(t)
+
+        for thread in threads:
             t.start()
+
+        for thread in threads:
             t.join()
+
         return jsonify({'code': 0, 'result': {'success': succ, 'failed': fail}})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
@@ -102,13 +116,20 @@ def switch_vk2():
 def switch_db2():
     succ = []
     fail = []
+    threads = []
     data = request.json
     if data is not None and data.get('classid'):
         semaphore = threading.Semaphore(10)
         for id in data['classid'].split('\n'):
             t = SwitchLineThread(semaphore, [API_DB2], id, succ, fail)
+            threads.append(t)
+
+        for thread in threads:
             t.start()
+
+        for thread in threads:
             t.join()
+
         return jsonify({'code': 0, 'result': {'success': succ, 'failed': fail}})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
