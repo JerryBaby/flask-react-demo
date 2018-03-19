@@ -93,9 +93,9 @@ def update_monitor_status():
         try:
             za_t = ZabbixApi(tencent_api, 'Admin', 'Admin')
             za_t.login()
-            hosts_t = za_t.get_monitor_data(['ten\.dm'])
+            hosts_t = za_t.get_monitor_data(['ten\.dm', 'agora\.dm'])
 
-            za_a = ZabbixApi(ali_api, 'Admin', 'Lvc_zabbixAdmin!')
+            za_a = ZabbixApi(ali_api, 'Admin', 'Admin')
             za_a.login()
             hosts_a = za_a.get_monitor_data(['ali\.dm', 'ali\.qr'])
 
