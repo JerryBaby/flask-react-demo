@@ -11,9 +11,9 @@ API_DB2 = 'http://localhost/api/invoker/service/class/{classID}/newLine/S4_V0_L2
 
 
 class SwitchLineThread(threading.Thread):
-    def __init__(self, semaphore, apis, classid, succ, fail):
+    def __init__(self, apis, classid, succ, fail):
         super(SwitchLineThread, self).__init__()
-        self.semaphore = semaphore
+        self.semaphore = threading.Semaphore(8)
         self.apis = apis
         self.classid = classid
         self.succ = succ
@@ -29,6 +29,7 @@ class SwitchLineThread(threading.Thread):
                     r.raise_for_status()
                     if r.json().get('success'):
                         self.succ.append(self.classid)
+                        print 'Success: %s' % self.classid
                     else:
                         self.fail.append(self.classid)
                         print 'Failed: %s' % self.classid
@@ -70,13 +71,16 @@ class SwitchLineThread(threading.Thread):
 def switch_vk1():
     succ = []
     fail = []
+    counts = []
     data = request.json
     if data is not None and data.get('classid'):
-        semaphore = threading.Semaphore(10)
         for id in data['classid'].split('\n'):
-            t = SwitchLineThread(semaphore, [API_VK1], id, succ, fail)
+            t = SwitchLineThread([API_VK1], id, succ, fail)
             t.start()
-            t.join()
+            counts.append(t)
+        for thread in counts:
+            if thread.is_alive():
+                thread.join()
         return jsonify({'code': 0, 'result': {'success': succ, 'failed': fail}})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
@@ -86,13 +90,16 @@ def switch_vk1():
 def switch_vk2():
     succ = []
     fail = []
+    counts = []
     data = request.json
     if data is not None and data.get('classid'):
-        semaphore = threading.Semaphore(10)
         for id in data['classid'].split('\n'):
-            t = SwitchLineThread(semaphore, [API_VK1, API_VK2], id, succ, fail)
+            t = SwitchLineThread([API_VK1, API_VK2], id, succ, fail)
             t.start()
-            t.join()
+            counts.append(t)
+        for thread in counts:
+            if thread.is_alive():
+                thread.join()
         return jsonify({'code': 0, 'result': {'success': succ, 'failed': fail}})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
@@ -102,13 +109,16 @@ def switch_vk2():
 def switch_db2():
     succ = []
     fail = []
+    counts = []
     data = request.json
     if data is not None and data.get('classid'):
-        semaphore = threading.Semaphore(10)
         for id in data['classid'].split('\n'):
-            t = SwitchLineThread(semaphore, [API_DB2], id, succ, fail)
+            t = SwitchLineThread([API_DB2], id, succ, fail)
             t.start()
-            t.join()
+            counts.append(t)
+        for thread in counts:
+            if thread.is_alive():
+                thread.join()
         return jsonify({'code': 0, 'result': {'success': succ, 'failed': fail}})
     else:
         return jsonify({'code': 1, 'result': 'invalid parameters.'})
