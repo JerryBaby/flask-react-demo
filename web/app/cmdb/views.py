@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import time
 import threading
 from flask import request, jsonify
 import requests
@@ -13,7 +14,7 @@ API_DB2 = 'http://localhost/api/invoker/service/class/{classID}/newLine/S4_V0_L2
 class SwitchLineThread(threading.Thread):
     def __init__(self, apis, classid, succ, fail):
         super(SwitchLineThread, self).__init__()
-        self.semaphore = threading.Semaphore(8)
+        self.semaphore = threading.Semaphore(4)
         self.apis = apis
         self.classid = classid
         self.succ = succ
@@ -55,15 +56,20 @@ class SwitchLineThread(threading.Thread):
                         r2.raise_for_status()
                         if r2.json().get('success'):
                             self.succ.append(self.classid)
+                            print 'Success: %s' % self.classid
                         else:
                             self.fail.append(self.classid)
+                            print 'Failed: %s' % self.classid
                     else:
                         self.fail.append(self.classid)
+                        print 'Failed: %s' % self.classid
                 except Exception as e:
                     print e
                     self.fail.append(self.classid)
+                    print 'Failed: %s' % self.classid
             else:
                 self.fail.append(self.classid)
+                print 'Failed: %s' % self.classid
             self.semaphore.release()
 
 
@@ -75,6 +81,7 @@ def switch_vk1():
     data = request.json
     if data is not None and data.get('classid'):
         for id in data['classid'].split('\n'):
+            time.sleep(0.01)
             t = SwitchLineThread([API_VK1], id, succ, fail)
             t.start()
             counts.append(t)
@@ -94,6 +101,7 @@ def switch_vk2():
     data = request.json
     if data is not None and data.get('classid'):
         for id in data['classid'].split('\n'):
+            time.sleep(0.01)
             t = SwitchLineThread([API_VK1, API_VK2], id, succ, fail)
             t.start()
             counts.append(t)
@@ -113,6 +121,7 @@ def switch_db2():
     data = request.json
     if data is not None and data.get('classid'):
         for id in data['classid'].split('\n'):
+            time.sleep(0.01)
             t = SwitchLineThread([API_DB2], id, succ, fail)
             t.start()
             counts.append(t)
