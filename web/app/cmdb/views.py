@@ -21,8 +21,8 @@ class SwitchLineThread(threading.Thread):
         self.fail = fail
 
     def run(self):
+        self.semaphore.acquire()
         if len(self.apis) == 1:
-            self.semaphore.acquire()
             if self.classid.isdigit():
                 url = self.apis[0].format(classID=self.classid)
                 try:
@@ -41,10 +41,8 @@ class SwitchLineThread(threading.Thread):
             else:
                 self.fail.append(self.classid)
                 print 'Failed: %s' % self.classid
-            self.semaphore.release()
 
         if len(self.apis) == 2:
-            self.semaphore.acquire()
             if self.classid.isdigit():
                 url_1 = self.apis[0].format(classID=self.classid)
                 url_2 = self.apis[1].format(classID=self.classid)
@@ -70,7 +68,7 @@ class SwitchLineThread(threading.Thread):
             else:
                 self.fail.append(self.classid)
                 print 'Failed: %s' % self.classid
-            self.semaphore.release()
+        self.semaphore.release()
 
 
 @cmdb.route('/switch_vk1', methods=['POST'])
