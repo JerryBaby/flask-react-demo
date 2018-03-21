@@ -12,9 +12,9 @@ API_DB2 = 'http://localhost/api/invoker/service/class/{classID}/newLine/S4_V0_L2
 
 
 class SwitchLineThread(threading.Thread):
-    def __init__(self, apis, classid, succ, fail):
+    def __init__(self, semaphore, apis, classid, succ, fail):
         super(SwitchLineThread, self).__init__()
-        self.semaphore = threading.Semaphore(4)
+        self.semaphore = semaphore
         self.apis = apis
         self.classid = classid
         self.succ = succ
@@ -75,14 +75,14 @@ class SwitchLineThread(threading.Thread):
 
 @cmdb.route('/switch_vk1', methods=['POST'])
 def switch_vk1():
+    semaphore = threading.Semaphore(4)
     succ = []
     fail = []
     counts = []
     data = request.json
     if data is not None and data.get('classid'):
         for id in data['classid'].split('\n'):
-            time.sleep(0.01)
-            t = SwitchLineThread([API_VK1], id, succ, fail)
+            t = SwitchLineThread(semaphore, [API_VK1], id, succ, fail)
             t.start()
             counts.append(t)
         for thread in counts:
@@ -95,14 +95,14 @@ def switch_vk1():
 
 @cmdb.route('/switch_vk2', methods=['POST'])
 def switch_vk2():
+    semaphore = threading.Semaphore(4)
     succ = []
     fail = []
     counts = []
     data = request.json
     if data is not None and data.get('classid'):
         for id in data['classid'].split('\n'):
-            time.sleep(0.01)
-            t = SwitchLineThread([API_VK1, API_VK2], id, succ, fail)
+            t = SwitchLineThread(semaphore, [API_VK1, API_VK2], id, succ, fail)
             t.start()
             counts.append(t)
         for thread in counts:
@@ -115,14 +115,14 @@ def switch_vk2():
 
 @cmdb.route('/switch_db2', methods=['POST'])
 def switch_db2():
+    semaphore = threading.Semaphore(4)
     succ = []
     fail = []
     counts = []
     data = request.json
     if data is not None and data.get('classid'):
         for id in data['classid'].split('\n'):
-            time.sleep(0.01)
-            t = SwitchLineThread([API_DB2], id, succ, fail)
+            t = SwitchLineThread(semaphore, [API_DB2], id, succ, fail)
             t.start()
             counts.append(t)
         for thread in counts:
