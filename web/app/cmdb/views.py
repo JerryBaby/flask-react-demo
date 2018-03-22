@@ -1,6 +1,5 @@
 #-*- coding: utf-8 -*-
 import Queue
-import time
 import threading
 from flask import request, jsonify
 import requests
