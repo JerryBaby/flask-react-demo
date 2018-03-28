@@ -9,6 +9,7 @@ from . import cmdb
 API_VK1 = 'http://localhost/api/invoker/service/test/changeDBtoVK/class/{classID}?operatorId=666666'
 API_VK2 = 'http://localhost/api/invoker/service/class/{classID}/newLine/S9_V1_L2?operatorId=666666&operatorType=Staff'
 API_DB2 = 'http://localhost/api/invoker/service/class/{classID}/newLine/S4_V0_L2?operatorId=666666&operatorType=Staff'
+API_SW1 = 'http://localhost/api/invoker/service/test/changeDBtoVK/class/{classID}?operatorId=666666&vendor=3'
 
 
 class SwitchLineThread(threading.Thread):
@@ -108,6 +109,25 @@ def switch_vk2():
             queue.put(id)
         for _ in range(16):
             t = SwitchLineThread(semaphore, [API_VK1, API_VK2], succ, fail, queue)
+            t.start()
+        queue.join()
+        return jsonify({'code': 0, 'result': {'success': succ, 'failed': fail}})
+    else:
+        return jsonify({'code': 1, 'result': 'invalid parameters.'})
+
+
+@cmdb.route('/switch_sw1', methods=['POST'])
+def switch_sw1():
+    semaphore = threading.Semaphore(8)
+    succ = []
+    fail = []
+    queue = Queue.Queue()
+    data = request.json
+    if data is not None and data.get('classid'):
+        for id in data['classid'].split('\n'):
+            queue.put(id)
+        for _ in range(16):
+            t = SwitchLineThread(semaphore, [API_SW1], succ, fail, queue)
             t.start()
         queue.join()
         return jsonify({'code': 0, 'result': {'success': succ, 'failed': fail}})
