@@ -20,7 +20,7 @@ class SwitchBox extends Component {
 
     onSwitchVK1() {
         this.setState({
-            title: '执行结果 (切换线路: VK-1)',
+            title: '执行 (切换线路: VK-1)',
         });
 
         this.props.form.validateFields((err, values) => {
@@ -64,7 +64,7 @@ class SwitchBox extends Component {
 
     onSwitchVK2() {
         this.setState({
-            title: '执行结果 (切换线路: VK-2)',
+            title: '执行 (切换线路: VK-2)',
         });
 
         this.props.form.validateFields((err, values) => {
@@ -106,9 +106,53 @@ class SwitchBox extends Component {
         });
     }
 
+    onSwitchSW1() {
+        this.setState({
+            title: '执行 (切换线路: SW-1)',
+        });
+
+        this.props.form.validateFields((err, values) => {
+            if (err) {
+                console.log(err);
+            } else {
+                let data = JSON.stringify(values);
+
+                fetch('/cmdb_api/switch_sw1', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    credentials: 'include',
+                    body: data,
+                }).then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    } else {
+                        console.log('Bad request: ', res.url, 'statue: ', res.status);
+                    }
+                }).then((data) => {
+                    if (data.code != 0) {
+                        this.setState({
+                            result: data.result,
+                        });
+                    } else {
+                        this.setState({
+                            success: data.result.success,
+                            failed: data.result.failed,
+                        });
+                    }
+                }).catch((e) => {
+                    this.setState({
+                        result: e,
+                    });
+                });
+            }
+        });
+    }
+
     onSwitchDB2() {
         this.setState({
-            title: '执行结果 (切换线路: DB-2)',
+            title: '执行 (切换线路: DB-2)',
         });
 
         this.props.form.validateFields((err, values) => {
@@ -171,11 +215,13 @@ class SwitchBox extends Component {
                       <Input type="textarea" placeholder="输入 classID，每行一个" rows={4} />
                   )}
                 </FormItem>
-                <FormItem wrapperCol={{ span: 10, offset: 10 }}>
+                <FormItem wrapperCol={{ span: 10, offset: 8 }}>
                   <Button type="primary" htmlType="submit" onClick={this.onSwitchVK1.bind(this)}>VK 1</Button>
-                  &nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;
                   <Button type="primary" htmlType="submit" onClick={this.onSwitchVK2.bind(this)}>VK 2</Button>
-                  &nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <Button type="primary" htmlType="submit" onClick={this.onSwitchSW1.bind(this)}>SW 1</Button>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
                   <Button type="primary" htmlType="submit" onClick={this.onSwitchDB2.bind(this)}>DB 2</Button>
                 </FormItem>
               </Form>

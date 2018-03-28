@@ -61829,7 +61829,7 @@ var SwitchBox = function (_Component) {
             var _this2 = this;
 
             this.setState({
-                title: '执行结果 (切换线路: VK-1)'
+                title: '执行 (切换线路: VK-1)'
             });
 
             this.props.form.validateFields(function (err, values) {
@@ -61876,7 +61876,7 @@ var SwitchBox = function (_Component) {
             var _this3 = this;
 
             this.setState({
-                title: '执行结果 (切换线路: VK-2)'
+                title: '执行 (切换线路: VK-2)'
             });
 
             this.props.form.validateFields(function (err, values) {
@@ -61918,12 +61918,12 @@ var SwitchBox = function (_Component) {
             });
         }
     }, {
-        key: 'onSwitchDB2',
-        value: function onSwitchDB2() {
+        key: 'onSwitchSW1',
+        value: function onSwitchSW1() {
             var _this4 = this;
 
             this.setState({
-                title: '执行结果 (切换线路: DB-2)'
+                title: '执行 (切换线路: SW-1)'
             });
 
             this.props.form.validateFields(function (err, values) {
@@ -61932,7 +61932,7 @@ var SwitchBox = function (_Component) {
                 } else {
                     var data = JSON.stringify(values);
 
-                    fetch('/cmdb_api/switch_db2', {
+                    fetch('/cmdb_api/switch_sw1', {
                         method: 'POST',
                         headers: {
                             "Content-Type": "application/json"
@@ -61958,6 +61958,53 @@ var SwitchBox = function (_Component) {
                         }
                     }).catch(function (e) {
                         _this4.setState({
+                            result: e
+                        });
+                    });
+                }
+            });
+        }
+    }, {
+        key: 'onSwitchDB2',
+        value: function onSwitchDB2() {
+            var _this5 = this;
+
+            this.setState({
+                title: '执行 (切换线路: DB-2)'
+            });
+
+            this.props.form.validateFields(function (err, values) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    var data = JSON.stringify(values);
+
+                    fetch('/cmdb_api/switch_db2', {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        credentials: 'include',
+                        body: data
+                    }).then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        } else {
+                            console.log('Bad request: ', res.url, 'statue: ', res.status);
+                        }
+                    }).then(function (data) {
+                        if (data.code != 0) {
+                            _this5.setState({
+                                result: data.result
+                            });
+                        } else {
+                            _this5.setState({
+                                success: data.result.success,
+                                failed: data.result.failed
+                            });
+                        }
+                    }).catch(function (e) {
+                        _this5.setState({
                             result: e
                         });
                     });
@@ -61992,19 +62039,25 @@ var SwitchBox = function (_Component) {
                     ),
                     _react2.default.createElement(
                         FormItem,
-                        { wrapperCol: { span: 10, offset: 10 } },
+                        { wrapperCol: { span: 10, offset: 8 } },
                         _react2.default.createElement(
                             _button2.default,
                             { type: 'primary', htmlType: 'submit', onClick: this.onSwitchVK1.bind(this) },
                             'VK 1'
                         ),
-                        '\xA0\xA0\xA0',
+                        '\xA0\xA0\xA0\xA0',
                         _react2.default.createElement(
                             _button2.default,
                             { type: 'primary', htmlType: 'submit', onClick: this.onSwitchVK2.bind(this) },
                             'VK 2'
                         ),
-                        '\xA0\xA0\xA0',
+                        '\xA0\xA0\xA0\xA0',
+                        _react2.default.createElement(
+                            _button2.default,
+                            { type: 'primary', htmlType: 'submit', onClick: this.onSwitchSW1.bind(this) },
+                            'SW 1'
+                        ),
+                        '\xA0\xA0\xA0\xA0',
                         _react2.default.createElement(
                             _button2.default,
                             { type: 'primary', htmlType: 'submit', onClick: this.onSwitchDB2.bind(this) },
