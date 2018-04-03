@@ -30,6 +30,7 @@
 #### API
 
 * http://localhost/server\_api/\*: 服务器资产相关接口
+    * http://localhost/server\_api/get\_servers/<role>: 获取特定角色服务器资产信息
     * http://localhost/server\_api/get\_servers: 获取服务器资产信息
     * http://localhost/server\_api/server\_add: 添加服务器
     * http://localhost/server\_api/server\_del: 删除服务器

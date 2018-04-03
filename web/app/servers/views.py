@@ -8,6 +8,51 @@ from ..data_models import serveRole, Platform, Attribute, \
         Status, Servers, IPType, IP
 
 
+@server.route('/get_server/<role>')
+def get_server(role):
+    """
+    ->
+    {
+        "code": 0
+        "allnodes": [
+            {
+                "node_name": "l-edge1-beijing.lvc.beta.ten.dm",
+                "vendor": "腾讯云",
+                "region": "北京",
+                "lan_ip": ["1.1.1.1"],
+                "wan_ip": ["2.2.2.2"],
+            },
+            {
+                ...
+            },
+        ]
+    }
+    """
+    roles = [r.rolename for r in serveRole.query.order_by(serveRole.id).all()]
+    if role in roles:
+        res = []
+        id = serveRole.query.filter_by(rolename=role).first().id
+        servers = Servers.query.filter_by(role_id=id).all()
+        for s in servers:
+            item = {}
+            item['node_name'] = s.hostname
+            item['vendor'] = s.platform.platname
+            item['region'] = s.platform.regioname
+            lan_ips = []
+            wan_ips = []
+            for x in s.ip:
+                if x.ip_type.id == 1:
+                    lan_ips.append(x.address)
+                if x.ip_type.id == 2:
+                    wan_ips.append(x.address)
+            item['lan_ip'] = lan_ips
+            item['wan_ip'] = wan_ips
+            res.append(item)
+        return jsonify({'code': 0, 'allnodes': res})
+    else:
+        return jsonify({'code': 1, 'allnodes': None})
+
+
 @server.route('/get_servers')
 def get_servers():
     """
